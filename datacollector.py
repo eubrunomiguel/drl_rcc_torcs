@@ -573,15 +573,18 @@ def obs_vision_to_image_rgb(obs_image_vec):
 	return np.array(rgb, dtype=np.uint8)
 
 
+next_timestamp = 0
+
 def processImage(vision):
 	img = np.ndarray((64, 64, 3))
 	for i in range(3):
 		img[:, :, i] = 255 - vision[:, i].reshape((64, 64))
-
-
-	# plt.imshow(img, origin='lower')
-	# plt.draw()
-	# plt.pause(0.001)
+		
+	if timestamp is 0 or time.time() > next_timestamp:
+		next_timestamp = time.time() + 10
+		plt.imshow(img, origin='lower')
+		plt.draw()
+		plt.pause(0.001)
 
 def drive_example(c):
 	'''This is only an example. It will get around the track but the
@@ -591,8 +594,6 @@ def drive_example(c):
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
 	processImage(vision)
-
-	print(R['steer'])
 
 	# Steer To Corner
 	R['steer']= S['angle']*10 / PI
