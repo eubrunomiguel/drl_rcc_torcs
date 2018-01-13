@@ -2,13 +2,13 @@
 
 ### Options
 
-1. End-to-end neural network
-    * Run the simulator with the "perfect" driver. Collect the images and the steering angle.
-    * Create a network based on VGG
-    * Error function.
-    * Training
-2. Actor/Critic
-3. Segmentation
+* End-to-end neural network
+  * Run the simulator with the "perfect" driver. Collect the images and the steering angle.
+  * Create a network based on VGG
+  * Error function.
+  * Training
+* Actor/Critic
+* Segmentation
 
 ### Links
 
