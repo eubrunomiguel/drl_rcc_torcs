@@ -53,6 +53,7 @@
 # Try `snakeoil.py --help` to get started.
 
 # for Python3-based torcs python robot client
+import numpy as np
 import socket
 import sys
 import getopt
@@ -183,6 +184,7 @@ class Client():
 
                     time.sleep(1.0)
                     os.system('sh autostart.sh')
+                    time.sleep(1.0)
                     n_fail = 5
                 n_fail -= 1
 
@@ -622,7 +624,7 @@ def drive_example(c):
 
 # ================ MAIN ================
 if __name__ == "__main__":
-    C= Client(p=3101)
+    C = Client(p=3101)
     for step in range(C.maxSteps,0,-1):
         C.get_servers_input()
         drive_example(C)

@@ -15,10 +15,11 @@
       <file leaf-file-name="datacollector.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/datacollector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="60" column="25" lean-forward="false" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
+            <state relative-caret-position="340">
+              <caret line="574" column="26" lean-forward="false" selection-start-line="574" selection-start-column="26" selection-end-line="574" selection-end-column="26" />
               <folding>
-                <element signature="e#2726#2739#0" expanded="true" />
+                <element signature="e#2726#2744#0" expanded="true" />
+                <element signature="e#24189#25169#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -80,6 +81,8 @@
       <find>self</find>
       <find>col.</find>
       <find>col</find>
+      <find>torcs</find>
+      <find>autos</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -281,10 +284,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datacollector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="60" column="25" lean-forward="false" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
+        <state relative-caret-position="340">
+          <caret line="574" column="26" lean-forward="false" selection-start-line="574" selection-start-column="26" selection-end-line="574" selection-end-column="26" />
           <folding>
-            <element signature="e#2726#2739#0" expanded="true" />
+            <element signature="e#2726#2744#0" expanded="true" />
+            <element signature="e#24189#25169#0" expanded="false" />
           </folding>
         </state>
       </provider>
