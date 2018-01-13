@@ -573,18 +573,17 @@ def obs_vision_to_image_rgb(obs_image_vec):
 	return np.array(rgb, dtype=np.uint8)
 
 
-next_timestamp = 0
-
 def processImage(vision):
 	img = np.ndarray((64, 64, 3))
 	for i in range(3):
 		img[:, :, i] = 255 - vision[:, i].reshape((64, 64))
 
-	if next_timestamp is 0 or time.time() > next_timestamp:
-		next_timestamp = time.time() + 10
-		plt.imshow(img, origin='lower')
-		plt.draw()
-		plt.pause(0.001)
+	# if next_timestamp is 0 or time.time() > next_timestamp:
+	# next_timestamp = time.time() + 10
+	plt.imshow(img, origin='lower')
+	plt.draw()
+	plt.pause(1)
+	return img
 
 def drive_example(c):
 	'''This is only an example. It will get around the track but the
@@ -593,13 +592,12 @@ def drive_example(c):
 
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
-	processImage(vision)
+	img = processImage(vision)
 
 	# Steer To Corner
 	R['steer']= S['angle']*10 / PI
 	# Steer To Center
 	R['steer']-= S['trackPos']*.10
-
 
 	# Throttle Control
 	if S['speedX'] < target_speed - (R['steer']*50):
@@ -630,6 +628,7 @@ def drive_example(c):
 
 # ================ MAIN ================
 if __name__ == "__main__":
+	# next_timestamp = 0
 	C = Client(p=3101)
 	for step in range(C.maxSteps,0,-1):
 		C.get_servers_input()
