@@ -544,19 +544,19 @@ def make_observaton(raw_obs):
 
     print(raw_obs['img'])
 	return
-
-    # Get RGB from observation
-    image_rgb = obs_vision_to_image_rgb(raw_obs[names[8]])
-
-    return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
-                       speedX=np.array(raw_obs['speedX'], dtype=np.float32)/target_speed,
-                       speedY=np.array(raw_obs['speedY'], dtype=np.float32)/target_speed,
-                       speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/target_speed,
-                       opponents=np.array(raw_obs['opponents'], dtype=np.float32)/200.,
-                       rpm=np.array(raw_obs['rpm'], dtype=np.float32),
-                       track=np.array(raw_obs['track'], dtype=np.float32)/200.,
-                       wheelSpinVel=np.array(raw_obs['wheelSpinVel'], dtype=np.float32),
-                       img=image_rgb, trackPos=np.array(raw_obs['trackPos'], dtype=np.float32))
+	#
+    # # Get RGB from observation
+    # image_rgb = obs_vision_to_image_rgb(raw_obs[names[8]])
+	#
+    # return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
+    #                    speedX=np.array(raw_obs['speedX'], dtype=np.float32)/target_speed,
+    #                    speedY=np.array(raw_obs['speedY'], dtype=np.float32)/target_speed,
+    #                    speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/target_speed,
+    #                    opponents=np.array(raw_obs['opponents'], dtype=np.float32)/200.,
+    #                    rpm=np.array(raw_obs['rpm'], dtype=np.float32),
+    #                    track=np.array(raw_obs['track'], dtype=np.float32)/200.,
+    #                    wheelSpinVel=np.array(raw_obs['wheelSpinVel'], dtype=np.float32),
+    #                    img=image_rgb, trackPos=np.array(raw_obs['trackPos'], dtype=np.float32))
 
 
 def obs_vision_to_image_rgb(obs_image_vec):
