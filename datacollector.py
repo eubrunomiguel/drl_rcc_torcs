@@ -532,6 +532,7 @@ def destringify(s):
 
 
 def make_observaton(raw_obs):
+
     names = ['focus',
              'speedX', 'speedY', 'speedZ',
              'opponents',
@@ -540,6 +541,9 @@ def make_observaton(raw_obs):
              'wheelSpinVel',
              'img', 'trackPos']
     Observation = col.namedtuple('Observaion', names)
+
+    print(raw_obs['img'])
+	return
 
     # Get RGB from observation
     image_rgb = obs_vision_to_image_rgb(raw_obs[names[8]])

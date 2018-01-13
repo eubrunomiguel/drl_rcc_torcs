@@ -15,8 +15,8 @@
       <file leaf-file-name="datacollector.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/datacollector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="589" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="635" selection-end-column="0" />
+            <state relative-caret-position="340">
+              <caret line="545" column="10" lean-forward="false" selection-start-line="545" selection-start-column="10" selection-end-line="545" selection-end-column="10" />
               <folding>
                 <element signature="e#2726#2744#0" expanded="true" />
               </folding>
@@ -152,6 +152,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -302,8 +303,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datacollector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="589" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="635" selection-end-column="0" />
+        <state relative-caret-position="340">
+          <caret line="545" column="10" lean-forward="false" selection-start-line="545" selection-start-column="10" selection-end-line="545" selection-end-column="10" />
           <folding>
             <element signature="e#2726#2744#0" expanded="true" />
           </folding>
