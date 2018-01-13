@@ -15,8 +15,8 @@
       <file leaf-file-name="datacollector.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/datacollector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="590" column="23" lean-forward="false" selection-start-line="590" selection-start-column="23" selection-end-line="590" selection-end-column="23" />
+            <state relative-caret-position="230">
+              <caret line="589" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="635" selection-end-column="0" />
               <folding>
                 <element signature="e#2726#2744#0" expanded="true" />
               </folding>
@@ -302,8 +302,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datacollector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="590" column="23" lean-forward="false" selection-start-line="590" selection-start-column="23" selection-end-line="590" selection-end-column="23" />
+        <state relative-caret-position="230">
+          <caret line="589" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="635" selection-end-column="0" />
           <folding>
             <element signature="e#2726#2744#0" expanded="true" />
           </folding>
