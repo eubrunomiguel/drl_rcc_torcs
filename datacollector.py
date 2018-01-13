@@ -60,6 +60,7 @@ import getopt
 import os
 import time
 import collections as col
+import matplotlib.pyplot as plt
 PI= 3.14159265359
 target_speed=30
 
@@ -593,11 +594,12 @@ def drive_example(c):
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
 	img = processImage(vision)
+	current_steer = R['steer']
 
 	# Steer To Corner
-	R['steer']= S['angle']*10 / PI
+	R['steer'] = S['angle']*10 / PI
 	# Steer To Center
-	R['steer']-= S['trackPos']*.10
+	R['steer'] -= S['trackPos']*.10
 
 	# Throttle Control
 	if S['speedX'] < target_speed - (R['steer']*50):
