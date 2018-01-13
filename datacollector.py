@@ -61,6 +61,7 @@ import os
 import time
 import collections as col
 import matplotlib.pyplot as plt
+import pickle as plk
 PI= 3.14159265359
 target_speed=30
 
@@ -633,8 +634,10 @@ def drive_example(c):
 
 
 def save_state():
-	np.savetxt('data.txt', np.array(buffer))
-
+	print("saving file...")
+	name = "race" + str(time.time())
+	with open(name+'.txt', 'wb') as file:
+		plk.dump(buffer, file)
 
 buffer = []
 
