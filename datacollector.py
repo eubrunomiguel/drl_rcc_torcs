@@ -587,7 +587,8 @@ def drive_example(c):
     S,R= c.S.d,c.R.d
 
     observation = make_observaton(S)
-    processImage(observation['img'])
+	_, _, _, _, _, _, track, _, vision, trackPos = observation
+    processImage(vision)
 
     # Steer To Corner
     R['steer']= S['angle']*10 / PI
