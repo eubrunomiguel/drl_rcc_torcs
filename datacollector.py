@@ -643,7 +643,6 @@ buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
-	# next_timestamp = 0
 	C = Client(p=3101)
 
 	try:
@@ -655,10 +654,12 @@ if __name__ == "__main__":
 			end = time.time()
 			print("runned user frame in %fs" % (end-start))
 	except KeyboardInterrupt:
-		save_state()
+		pass
 
 	C.shutdown()
 	save_state()
 
 # later flip
 # later shuffle to lose correlation
+# drive mode change to see different angles
+# image augumentation
