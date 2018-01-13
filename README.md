@@ -1,5 +1,15 @@
 # drl_rcc_torcs
 
+### Options
+
+1. End-to-end neural network
+  1. Run the simulator with the "perfect" driver. Collect the images and the steering angle.
+  2. Create a network based on VGG
+  3. Error function.
+  4. Training
+2. Actor/Critic
+3. Segmentation
+
 ### Links
 
 * Simulated Car Racing Championship Competition Software Manual
