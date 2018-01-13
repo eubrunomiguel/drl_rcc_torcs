@@ -581,9 +581,9 @@ def processImage(vision):
 
 	# if next_timestamp is 0 or time.time() > next_timestamp:
 	# next_timestamp = time.time() + 10
-	plt.imshow(img, origin='lower')
-	plt.draw()
-	plt.pause(1)
+	#plt.imshow(img, origin='lower')
+	#plt.draw()
+	#plt.pause(1)
 	return img
 
 def drive_example(c):
