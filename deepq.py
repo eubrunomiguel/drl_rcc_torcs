@@ -5,6 +5,7 @@ import numpy as np
 if __name__ == "__main__":
     episode_count = 10
     max_steps = 50
+    buffer_size = 100000
 
     env = Environment()
     agent = Agent()
