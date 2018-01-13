@@ -574,9 +574,9 @@ def processImage(vision):
         img[:, :, i] = 255 - vision[:, i].reshape((64, 64))
 
 
-    plt.imshow(img, origin='lower')
-    plt.draw()
-    plt.pause(0.001)
+    # plt.imshow(img, origin='lower')
+    # plt.draw()
+    # plt.pause(0.001)
 
 def drive_example(c):
     '''This is only an example. It will get around the track but the
