@@ -21,7 +21,7 @@ class Agent(object):
         # vision is given as a tensor with size of (64*64, 3) = (4096, 3) <-- rgb
         # and values are in [0, 255]
 
-        focus, speedX, speedY, speedZ, opponents, rpm, track, wheelSpinVel, vision, trackPos = ob
+        _, _, _, _, _, _, track, _, vision, trackPos = ob
 
         """ The code below is for checking the vision input. This is very heavy for real-time Control
             So you may need to remove.
