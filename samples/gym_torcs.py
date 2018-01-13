@@ -29,14 +29,14 @@ class TorcsEnv:
 
         ##print("launch torcs")
         os.system('pkill torcs')
-        time.sleep(0.5)
+        time.sleep(1.5)
         if self.vision is True:
             os.system('torcs -nofuel -nodamage -nolaptime  -vision &')
         else:
             os.system('torcs  -nofuel -nodamage -nolaptime &')
-        time.sleep(0.5)
-        os.system('sh autostart.sh')
-        time.sleep(1)
+        time.sleep(1.5)
+        os.system('sh scripts/autostart.sh')
+        time.sleep(1.5)
 
         """
         # Modify here if you use multiple tracks in the environment
@@ -206,14 +206,14 @@ class TorcsEnv:
     def reset_torcs(self):
        #print("relaunch torcs")
         os.system('pkill torcs')
-        time.sleep(0.5)
+        time.sleep(1.5)
         if self.vision is True:
             os.system('torcs -nofuel -nodamage -nolaptime -vision &')
         else:
             os.system('torcs -nofuel -nodamage -nolaptime &')
-        time.sleep(0.5)
-        os.system('sh autostart.sh')
-        time.sleep(0.5)
+        time.sleep(1.5)
+        os.system('sh scripts/autostart.sh')
+        time.sleep(1.5)
 
     def agent_to_torcs(self, u):
         torcs_action = {'steer': u[0]}

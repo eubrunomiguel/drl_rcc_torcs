@@ -178,15 +178,14 @@ class Client():
 				if n_fail < 0:
 					print("relaunch torcs")
 					os.system('pkill torcs')
-					time.sleep(1.0)
+					time.sleep(1.5)
 					if self.vision is False:
 						os.system('torcs -nofuel -nodamage -nolaptime &')
 					else:
 						os.system('torcs -nofuel -nodamage -nolaptime -vision &')
-
-					time.sleep(1.0)
-					os.system('sh autostart.sh')
-					time.sleep(1.0)
+					time.sleep(1.5)
+					os.system('sh scripts/autostart.sh')
+					time.sleep(1.5)
 					n_fail = 5
 				n_fail -= 1
 
@@ -636,7 +635,7 @@ def drive_example(c):
 def save_state():
 	print("saving file...")
 	name = "race" + str(time.time())
-	with open(name+'.txt', 'wb') as file:
+	with open('racingdata/' + name+'.txt', 'wb') as file:
 		plk.dump(buffer, file)
 
 buffer = []

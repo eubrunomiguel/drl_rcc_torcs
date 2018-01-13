@@ -140,11 +140,11 @@ class Environment:
 
     def reset_torcs(self):
         self.close_torcs()
-        time.sleep(0.5)
+        time.sleep(1.5)
         os.system('torcs -nofuel -nodamage -nolaptime -vision &')
-        time.sleep(1)
-        os.system('sh autostart.sh')
-        time.sleep(1)
+        time.sleep(1.5)
+        os.system('sh scripts/autostart.sh')
+        time.sleep(1.5)
 
     def obs_vision_to_image_rgb(self, obs_image_vec):
         image_vec =  obs_image_vec
