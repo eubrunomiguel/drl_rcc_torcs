@@ -593,8 +593,11 @@ def drive_example(c):
 
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
+
 	img = processImage(vision)
 	current_steer = R['steer']
+
+	print(img.nbytes + 8)
 
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
@@ -632,8 +635,16 @@ def drive_example(c):
 if __name__ == "__main__":
 	# next_timestamp = 0
 	C = Client(p=3101)
+	buffer = 1000000
+
 	for step in range(C.maxSteps,0,-1):
+		start = time.time()
 		C.get_servers_input()
 		drive_example(C)
 		C.respond_to_server()
+		end = time.time()
+		print("runned user frame in %fs" % (end-start))
 	C.shutdown()
+
+# later flip
+# later shuffle to lose correlation
