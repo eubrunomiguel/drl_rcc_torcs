@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f83ad59-506f-4055-9167-b03697b0168e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/deepq.py" afterPath="$PROJECT_DIR$/deepq.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/replaybuffer.py" afterPath="$PROJECT_DIR$/replaybuffer.py" />
     </list>
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,25 +12,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="deepq.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="replaybuffer.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/replaybuffer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="deepq.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deepq.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="7" column="24" lean-forward="false" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="replaybuffer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/replaybuffer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="32" lean-forward="false" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,8 +77,8 @@
       <list>
         <option value="$PROJECT_DIR$/environment.py" />
         <option value="$PROJECT_DIR$/agent.py" />
-        <option value="$PROJECT_DIR$/replaybuffer.py" />
         <option value="$PROJECT_DIR$/deepq.py" />
+        <option value="$PROJECT_DIR$/replaybuffer.py" />
       </list>
     </option>
   </component>
@@ -239,22 +239,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/replaybuffer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="32" lean-forward="false" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deepq.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="24" lean-forward="false" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/replaybuffer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>

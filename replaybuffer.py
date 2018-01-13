@@ -28,8 +28,6 @@ class ReplayBuffer(object):
             self.buffer.append(experience)
 
     def count(self):
-        # if buffer is full, return buffer size
-        # otherwise, return experience counter
         return self.num_experiences
 
     def erase(self):
