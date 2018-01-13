@@ -579,8 +579,8 @@ def processImage(vision):
 	img = np.ndarray((64, 64, 3))
 	for i in range(3):
 		img[:, :, i] = 255 - vision[:, i].reshape((64, 64))
-		
-	if timestamp is 0 or time.time() > next_timestamp:
+
+	if next_timestamp is 0 or time.time() > next_timestamp:
 		next_timestamp = time.time() + 10
 		plt.imshow(img, origin='lower')
 		plt.draw()
