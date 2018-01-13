@@ -597,7 +597,7 @@ def drive_example(c):
 	img = processImage(vision)
 	current_steer = R['steer']
 
-	print(img.nbytes + 8)
+	buffer.append((img, current_steer))
 
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
@@ -631,20 +631,31 @@ def drive_example(c):
 		R['gear']=6
 	return
 
+
+def save_state():
+	np.savetxt('data.txt', np.array(buffer))
+
+
+buffer = []
+
 # ================ MAIN ================
 if __name__ == "__main__":
 	# next_timestamp = 0
 	C = Client(p=3101)
-	buffer = 1000000
 
-	for step in range(C.maxSteps,0,-1):
-		start = time.time()
-		C.get_servers_input()
-		drive_example(C)
-		C.respond_to_server()
-		end = time.time()
-		print("runned user frame in %fs" % (end-start))
+	try:
+		for step in range(C.maxSteps,0,-1):
+			start = time.time()
+			C.get_servers_input()
+			drive_example(C)
+			C.respond_to_server()
+			end = time.time()
+			print("runned user frame in %fs" % (end-start))
+	except KeyboardInterrupt:
+		save_state()
+
 	C.shutdown()
+	save_state()
 
 # later flip
 # later shuffle to lose correlation
