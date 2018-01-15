@@ -655,7 +655,7 @@ if __name__ == "__main__":
 				end = time.time()
 				if step % 50 == 0:
 					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
-					save_state(filename)
+					save_state(buffer, filename)
 		except KeyboardInterrupt:
 			pass
 
