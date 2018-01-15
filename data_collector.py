@@ -134,7 +134,7 @@ class Client():
 		self.trackname= 'unknown'
 		self.stage= 3 # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
 		self.debug= False
-		self.maxSteps= 50000  # 50steps/second
+		self.maxSteps= 500  # 50steps/second
 		self.parse_the_command_line()
 		if H: self.host= H
 		if p: self.port= p
@@ -638,21 +638,23 @@ buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
-	C = Client(p=3101)
 
-	try:
-		for step in range(C.maxSteps,0,-1):
-			start = time.time()
-			C.get_servers_input()
-			drive_example(C)
-			C.respond_to_server()
-			end = time.time()
-			print("runned user frame in %fs" % (end-start))
-	except KeyboardInterrupt:
-		pass
+	while True:
+		C = Client(p=3101)
 
-	C.shutdown()
-	save_state()
+		try:
+			for step in range(C.maxSteps,0,-1):
+				start = time.time()
+				C.get_servers_input()
+				drive_example(C)
+				C.respond_to_server()
+				end = time.time()
+				print("runned user frame in %fs" % (end-start))
+		except KeyboardInterrupt:
+			pass
+
+		C.shutdown()
+		save_state()
 
 # later flip
 # later shuffle to lose correlation
