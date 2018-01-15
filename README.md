@@ -35,6 +35,6 @@
 * run with command line --random option to enable random track selector
 
 ### todo
-* preprocess image, image segmentation
+* preprocess image, image augmentation,  road segmentation
 * test network and solver
 * adjust hyperparameters
