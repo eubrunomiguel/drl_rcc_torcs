@@ -158,7 +158,7 @@ class Client():
 		self.so.settimeout(1)
 
 		torcs_instance = TorcsInstance()
-		torcs_instance.start(random_track=False)
+		torcs_instance.start(random_track=True)
 
 		n_fail = 2
 		while True:
@@ -181,7 +181,7 @@ class Client():
 				print("Waiting for server on %d............" % self.port)
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
-					torcs_instance.start(random_track=False)
+					torcs_instance.start(random_track=True)
 					n_fail = 5
 				n_fail -= 1
 

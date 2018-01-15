@@ -11,7 +11,7 @@ class TorcsInstance:
 		time.sleep(1.0)
 		if random_track is True:
 			print("Random")
-			os.system(u'sh random_autostart.sh')
+			os.system(u'sh scripts/random_autostart.sh')
 		else:
 			print("Not Random")
 			os.system(u'sh autostart.sh')
