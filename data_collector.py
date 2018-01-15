@@ -81,6 +81,7 @@ ophelp+= ' --stage, -s <#>      0=warm up, 1=qualifying, 2=race, 3=unknown. [3]\
 ophelp+= ' --debug, -d          Output full telemetry.\n'
 ophelp+= ' --help, -h           Show this help.\n'
 ophelp+= ' --version, -v        Show current version.'
+ophelp+= ' --random, -r        Random choose track.'
 usage= 'Usage: %s [ophelp [optargs]] \n' % sys.argv[0]
 usage= usage + ophelp
 version= "20130505-2"
@@ -221,7 +222,7 @@ class Client():
 					self.maxEpisodes= int(opt[1])
 				if opt[0] == '-m' or opt[0] == '--steps':
 					self.maxSteps= int(opt[1])
-				if opt[0] == '-random' or opt[0] == '--random':
+				if opt[0] == '-r' or opt[0] == '--random':
 					self.randomTrack = True
 				if opt[0] == '-v' or opt[0] == '--version':
 					print('%s %s' % (sys.argv[0], version))
