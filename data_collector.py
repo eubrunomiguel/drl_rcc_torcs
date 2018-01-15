@@ -135,7 +135,7 @@ class Client():
 		self.trackname= 'unknown'
 		self.stage= 3 # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
 		self.debug= False
-		self.maxSteps= 50000  # 50steps/second
+		self.maxSteps= 15000  # 50steps/second
 		self.randomTrack = False
 		self.parse_the_command_line()
 		if H: self.host= H
