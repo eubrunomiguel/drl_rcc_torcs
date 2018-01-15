@@ -586,22 +586,19 @@ def processImage(vision):
 	#plt.pause(1)
 	return img
 
-def drive_example(c, skip_observation):
+def drive_example(c, observate):
 	'''This is only an example. It will get around the track but the
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
 
-	if not skip_observation:
+	if observate:
 		print("not skipping obs")
 		observation = make_observaton(S)
 		_, _, _, _, _, _, track, _, vision, trackPos = observation
+		img = processImage(vision)
+		buffer.append((img, R['steer']))
 	else:
 		print("skipping obs")
-
-	img = processImage(vision)
-	current_steer = R['steer']
-
-	buffer.append((img, current_steer))
 
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
