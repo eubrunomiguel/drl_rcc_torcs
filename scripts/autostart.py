@@ -4,7 +4,7 @@ import time
 class TorcsInstance:
 
 	def start(self):
-		print("Relaunch Torcs 2.0")
+		print("Relaunch Torcs 2.1")
 		self.stop()
 		self.__wait(2)
 		self.__start()
@@ -12,14 +12,13 @@ class TorcsInstance:
 
 	def stop(self):
 		os.system('pkill torcs')
-		self.__wait(0.5)
 
 	def __wait(self, seconds):
 		time.sleep(seconds)
 
 	def __scriptboot(self):
 		self.wait(1.5)
-		os.system('sh scripts/autostart.sh')
+		os.system('sh autostart.sh')
 		self.wait(1.5)
 
 	def __start(self):

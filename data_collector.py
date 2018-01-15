@@ -178,12 +178,14 @@ class Client():
 				print("Waiting for server on %d............" % self.port)
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
-					print("relaunc 1")
-					os.system(u'pkill torcs')
-					time.sleep(1.0)
-					os.system(u'torcs -nofuel -nodamage -nolaptime &')
-					time.sleep(1.0)
-					os.system(u'sh autostart.sh')
+					torcs_instance = TorcsInstance()
+					torcs_instance.start()
+					# print("relaunc 1")
+					# os.system(u'pkill torcs')
+					# time.sleep(1.0)
+					# os.system(u'torcs -nofuel -nodamage -nolaptime &')
+					# time.sleep(1.0)
+					# os.system(u'sh autostart.sh')
 					n_fail = 5
 				n_fail -= 1
 
