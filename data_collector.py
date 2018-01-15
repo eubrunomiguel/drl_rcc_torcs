@@ -80,8 +80,8 @@ ophelp+= ' --track, -t <track>  Your name for this track. Used for learning. [un
 ophelp+= ' --stage, -s <#>      0=warm up, 1=qualifying, 2=race, 3=unknown. [3]\n'
 ophelp+= ' --debug, -d          Output full telemetry.\n'
 ophelp+= ' --help, -h           Show this help.\n'
-ophelp+= ' --version, -v        Show current version.'
-ophelp+= ' --random, -r        Random choose track.'
+ophelp+= ' --version, -v        Show current version.\n'
+ophelp+= ' --random, -r         Random choose track.'
 usage= 'Usage: %s [ophelp [optargs]] \n' % sys.argv[0]
 usage= usage + ophelp
 version= "20130505-2"
@@ -194,10 +194,10 @@ class Client():
 
 	def parse_the_command_line(self):
 		try:
-			(opts, args) = getopt.getopt(sys.argv[1:], 'H:p:i:m:e:t:s:dhv',
+			(opts, args) = getopt.getopt(sys.argv[1:], 'H:p:i:m:e:t:r:s:dhv',
 					   ['host=','port=','id=','steps=',
 						'episodes=','track=','stage=',
-						'debug','help','version'])
+						'debug','help','version', 'random'])
 		except getopt.error as why:
 			print('getopt error: %s\n%s' % (why, usage))
 			sys.exit(-1)
