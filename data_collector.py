@@ -600,7 +600,7 @@ def drive_example(c, observate):
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
 	# Steer To Center
-	R['steer'] -= S['trackPos']
+	R['steer'] -= S['trackPos']*2
 
 	# Throttle Control
 	if S['speedX'] < target_speed - (R['steer']*50):
