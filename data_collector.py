@@ -586,13 +586,17 @@ def processImage(vision):
 	#plt.pause(1)
 	return img
 
-def drive_example(c):
+def drive_example(c, skip_observation):
 	'''This is only an example. It will get around the track but the
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
 
-	observation = make_observaton(S)
-	_, _, _, _, _, _, track, _, vision, trackPos = observation
+	if not skip_observation:
+		print("not skipping obs")
+		observation = make_observaton(S)
+		_, _, _, _, _, _, track, _, vision, trackPos = observation
+	else:
+		print("skipping obs")
 
 	img = processImage(vision)
 	current_steer = R['steer']
@@ -647,10 +651,11 @@ if __name__ == "__main__":
 		C = Client(p=3101)
 
 		try:
-			for step in range(C.maxSteps,0,-1):
+			ignore_steps = 10 # camera is rotating at the beginning
+			for step in range(C.maxSteps):
 				start = time.time()
 				C.get_servers_input()
-				drive_example(C)
+				drive_example(C, (step > ignore_steps))
 				C.respond_to_server()
 				end = time.time()
 				print("runned user frame in %fs step %d" % (end-start, step))
