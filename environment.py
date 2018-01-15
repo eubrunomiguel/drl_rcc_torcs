@@ -8,6 +8,7 @@ import copy
 import collections as col
 import os
 import time
+from scripts.autostart import TorcsInstance
 
 
 class Environment:
@@ -136,15 +137,13 @@ class Environment:
         return self.observation
 
     def close_torcs(self):
-        os.system('pkill torcs')
+        torcs_instance = TorcsInstance()
+        torcs_instance.stop()
 
     def reset_torcs(self):
         self.close_torcs()
-        time.sleep(1.5)
-        os.system('torcs -nofuel -nodamage -nolaptime -vision &')
-        time.sleep(1.5)
-        os.system('sh scripts/autostart.sh')
-        time.sleep(1.5)
+        torcs_instance = TorcsInstance()
+        torcs_instance.start()
 
     def obs_vision_to_image_rgb(self, obs_image_vec):
         image_vec =  obs_image_vec
