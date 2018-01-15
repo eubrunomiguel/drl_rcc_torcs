@@ -62,6 +62,7 @@ import time
 import collections as col
 import matplotlib.pyplot as plt
 import pickle as plk
+
 PI= 3.14159265359
 target_speed=30
 
@@ -178,7 +179,7 @@ class Client():
 				if n_fail < 0:
 					print("relaunch torcs")
 					os.system('pkill torcs')
-					time.sleep(1.5)
+					time.sleep(2)
 					if self.vision is False:
 						os.system('torcs -nofuel -nodamage -nolaptime &')
 					else:
