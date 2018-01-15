@@ -586,7 +586,7 @@ def processImage(vision):
 	#plt.pause(1)
 	return img
 
-def drive_example(c, observate):
+def drive_example(c, observate, buffer):
 	'''This is only an example. It will get around the track but the
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
@@ -631,13 +631,11 @@ def drive_example(c, observate):
 	return
 
 
-def save_state():
+def save_state(buffer, filename):
 	print("Saving race data...")
-	name = "race" + str(time.time())
-	with open('racingdata/' + name+'.txt', 'wb') as file:
+	with open(filename, 'wba') as file:
 		plk.dump(buffer, file)
-
-buffer = []
+	buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
@@ -647,19 +645,21 @@ if __name__ == "__main__":
 
 		try:
 			ignore_steps = 10 # camera is rotating at the beginning
+			filename = "racingdata/" + "race" + str(time.time()) + ".txt"
+			buffer = []
 			for step in range(C.maxSteps):
 				start = time.time()
 				C.get_servers_input()
-				drive_example(C, (step > ignore_steps))
+				drive_example(C, (step > ignore_steps), buffer)
 				C.respond_to_server()
 				end = time.time()
 				if step % 50 == 0:
 					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
+					save_state(filename)
 		except KeyboardInterrupt:
 			pass
 
 		C.shutdown()
-		save_state()
 
 # later flip
 # later shuffle to lose correlation
