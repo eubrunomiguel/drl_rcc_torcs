@@ -33,3 +33,8 @@
 * If you want to compile for yourself, use /home/gym_torcs/vtorcs-RL-color/src/libs/raceengineclient/raceengine.cpp
 * to get from little screen to big screen: down, down, enter; down, enter; right, right, enter; enter
 * run with command line --random option to enable random track selector
+
+### todo
+*preprocess image, image segmentation
+*test network and solver
+*adjust hyperparameters
