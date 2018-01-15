@@ -632,7 +632,7 @@ def drive_example(c, observate, buffer):
 
 
 def save_state(buffer, filename):
-	print("Saving race data...")
+	print("Saving race data %s ..." % (filename))
 	with open(filename, 'wba') as file:
 		plk.dump(buffer, file)
 	buffer = []
