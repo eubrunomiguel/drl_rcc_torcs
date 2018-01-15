@@ -12,7 +12,7 @@ class TorcsInstance:
 
 	def stop(self):
 		os.system('pkill torcs')
-		self.wait(0.5)
+		self.__wait(0.5)
 
 	def __wait(self, seconds):
 		time.sleep(seconds)
