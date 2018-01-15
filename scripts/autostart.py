@@ -18,9 +18,9 @@ class TorcsInstance:
 
 	def __scriptboot(self):
 		self.wait(1.5)
-		os.system('sh autostart.sh')
+		os.system(u'sh autostart.sh')
 		self.wait(1.5)
 
 	def __start(self):
-		os.system('torcs -nofuel -nodamage -nolaptime &')
+		os.system(u'torcs -nofuel -nodamage -nolaptime &')
 
