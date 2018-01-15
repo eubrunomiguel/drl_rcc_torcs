@@ -158,7 +158,7 @@ class Client():
 		self.so.settimeout(1)
 
 		torcs_instance = TorcsInstance()
-		torcs_instance.start()
+		torcs_instance.start(random_track=True)
 
 		n_fail = 2
 		while True:
