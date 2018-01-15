@@ -591,16 +591,17 @@ def drive_example(c, observate):
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
 
-	if observate:
-		observation = make_observaton(S)
-		_, _, _, _, _, _, track, _, vision, trackPos = observation
-		img = processImage(vision)
-		buffer.append((img, R['steer']))
+	observation = make_observaton(S)
+	_, _, _, _, _, _, track, _, vision, trackPos = observation
+	img = processImage(vision)
 
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
 	# Steer To Center
 	R['steer'] -= S['trackPos']*.10
+
+	if observate:
+		buffer.append((img, R['steer']))
 
 	# Throttle Control
 	if S['speedX'] < target_speed - (R['steer']*50):
