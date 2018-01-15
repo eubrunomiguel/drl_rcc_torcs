@@ -134,7 +134,8 @@ class Client():
 		self.trackname= 'unknown'
 		self.stage= 3 # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
 		self.debug= False
-		self.maxSteps= 20  # 50steps/second
+		self.maxSteps= 50000  # 50steps/second
+		self.randomTrack = False
 		self.parse_the_command_line()
 		if H: self.host= H
 		if p: self.port= p
@@ -158,7 +159,7 @@ class Client():
 		self.so.settimeout(1)
 
 		torcs_instance = TorcsInstance()
-		torcs_instance.start(random_track=True)
+		torcs_instance.start(random_track=self.randomTrack)
 
 		n_fail = 2
 		while True:
@@ -181,7 +182,7 @@ class Client():
 				print("Waiting for server on %d............" % self.port)
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
-					torcs_instance.start(random_track=True)
+					torcs_instance.start(random_track=self.randomTrack)
 					n_fail = 5
 				n_fail -= 1
 
@@ -220,6 +221,8 @@ class Client():
 					self.maxEpisodes= int(opt[1])
 				if opt[0] == '-m' or opt[0] == '--steps':
 					self.maxSteps= int(opt[1])
+				if opt[0] == '-random' or opt[0] == '--random':
+					self.randomTrack = True
 				if opt[0] == '-v' or opt[0] == '--version':
 					print('%s %s' % (sys.argv[0], version))
 					sys.exit(0)
