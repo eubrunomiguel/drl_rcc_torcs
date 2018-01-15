@@ -649,7 +649,7 @@ if __name__ == "__main__":
 				drive_example(C)
 				C.respond_to_server()
 				end = time.time()
-				print("runned user frame in %fs" % (end-start))
+				print("runned user frame in %fs step %d" % (end-start, step))
 		except KeyboardInterrupt:
 			pass
 
