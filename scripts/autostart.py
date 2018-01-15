@@ -10,6 +10,7 @@ class TorcsInstance:
 		os.system(u'torcs -nofuel -nodamage -nolaptime -vision &')
 		time.sleep(1.0)
 		if random_track:
+			print("opening random")
 			os.system(u'sh random_autostart.sh')
 		else:
 			os.system(u'sh autostart.sh')
