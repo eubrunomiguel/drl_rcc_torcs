@@ -592,13 +592,10 @@ def drive_example(c, observate):
 	S,R= c.S.d,c.R.d
 
 	if observate:
-		print("not skipping obs")
 		observation = make_observaton(S)
 		_, _, _, _, _, _, track, _, vision, trackPos = observation
 		img = processImage(vision)
 		buffer.append((img, R['steer']))
-	else:
-		print("skipping obs")
 
 	# Steer To Corner
 	R['steer'] = S['angle']*10 / PI
@@ -655,7 +652,8 @@ if __name__ == "__main__":
 				drive_example(C, (step > ignore_steps))
 				C.respond_to_server()
 				end = time.time()
-				print("runned user frame in %fs step %d" % (end-start, step))
+				if step % 50 == 0:
+					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
 		except KeyboardInterrupt:
 			pass
 
