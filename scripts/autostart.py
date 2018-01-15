@@ -14,4 +14,4 @@ class TorcsInstance:
 			os.system(u'sh scripts/random_autostart.sh')
 		else:
 			print("Not Random")
-			os.system(u'sh autostart.sh')
+			os.system(u'sh scripts/autostart.sh')
