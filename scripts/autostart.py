@@ -3,10 +3,13 @@ import time
 
 class TorcsInstance:
 
-	def start(self):
+	def start(self, random_track=False):
 		print("Relaunch Torcs 2.0")
 		os.system(u'pkill torcs')
 		time.sleep(1.0)
 		os.system(u'torcs -nofuel -nodamage -nolaptime -vision &')
 		time.sleep(1.0)
-		os.system(u'sh autostart.sh')
+		if random_track:
+			os.system(u'sh random_autostart.sh')
+		else:
+			os.system(u'sh autostart.sh')

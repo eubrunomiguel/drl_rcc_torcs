@@ -181,7 +181,7 @@ class Client():
 				print("Waiting for server on %d............" % self.port)
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
-					torcs_instance.start()
+					torcs_instance.start(random_track=True)
 					n_fail = 5
 				n_fail -= 1
 
@@ -629,7 +629,7 @@ def drive_example(c):
 
 
 def save_state():
-	print("saving file...")
+	print("Saving race data...")
 	name = "race" + str(time.time())
 	with open('racingdata/' + name+'.txt', 'wb') as file:
 		plk.dump(buffer, file)
