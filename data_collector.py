@@ -647,7 +647,7 @@ if __name__ == "__main__":
 			ignore_steps = 10 # camera is rotating at the beginning
 			while target_speed < 100:
 				buffer = []
-				filename = "racingdata/" + "race" + str(time.time()) + "#speed=" + target_speed + ".txt"
+				filename = "racingdata/" + "race" + str(time.time()) + "#speed=" + str(target_speed) + ".txt"
 				for step in range(C.maxSteps):
 					start = time.time()
 					C.get_servers_input()
