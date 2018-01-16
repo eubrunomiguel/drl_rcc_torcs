@@ -653,9 +653,9 @@ if __name__ == "__main__":
 				end = time.time()
 				if step % 50 == 0:
 					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
-					save_state()
 		except KeyboardInterrupt:
 			pass
+		save_state()
 		C.shutdown()
 
 # later flip
