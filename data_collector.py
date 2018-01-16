@@ -652,7 +652,7 @@ if __name__ == "__main__":
 		try:
 			while target_speed < max_speed_test:
 				buffer = []
-				filename = "racingdata/" + "race" + str(time.time()) + "#track="+track+"#speed=" + str(target_speed) + ".txt"
+				filename = "racingdata/" + "race" + str(time.time()) + "#track="+str(track)+"#speed=" + str(target_speed) + ".txt"
 				for step in range(C.maxSteps):
 					start = time.time()
 					C.get_servers_input()
