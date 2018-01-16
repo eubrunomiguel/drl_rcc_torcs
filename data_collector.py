@@ -644,21 +644,23 @@ if __name__ == "__main__":
 	while True:
 		C = Client(p=3101)
 		try:
-			buffer = []
-			filename = "racingdata/" + "race" + str(time.time()) + ".txt"
 			ignore_steps = 10 # camera is rotating at the beginning
-			for step in range(C.maxSteps):
-				start = time.time()
-				C.get_servers_input()
-				endrace = drive(C, (step > ignore_steps))
-				C.respond_to_server()
-				end = time.time()
-				if step % 200 == 0 or endrace:
-					print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
-					save_state(filename)
-					buffer = []
-					if endrace:
-						break
+			while target_speed < 100:
+				buffer = []
+				filename = "racingdata/" + "race" + str(time.time()) + "#speed=" + target_speed + ".txt"
+				for step in range(C.maxSteps):
+					start = time.time()
+					C.get_servers_input()
+					endrace = drive(C, (step > ignore_steps))
+					C.respond_to_server()
+					end = time.time()
+					if step % 200 == 0 or endrace:
+						print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
+						save_state(filename)
+						buffer = []
+						if endrace:
+							break
+				target_speed = target_speed + 10
 		except KeyboardInterrupt:
 			pass
 		C.shutdown()
