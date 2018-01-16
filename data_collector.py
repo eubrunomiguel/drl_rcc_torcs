@@ -135,7 +135,7 @@ class Client():
 		self.trackname= 'unknown'
 		self.stage= 3 # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
 		self.debug= False
-		self.maxSteps= 15000  # 50steps/second
+		self.maxSteps= 7000  # 50steps/second
 		self.randomTrack = False
 		self.parse_the_command_line()
 		if H: self.host= H
@@ -586,7 +586,7 @@ def processImage(vision):
 	#plt.pause(1)
 	return img
 
-def drive_example(c, observate, buffer):
+def drive_example(c, observate):
 	'''This is only an example. It will get around the track but the
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
@@ -631,34 +631,31 @@ def drive_example(c, observate, buffer):
 	return
 
 
-def save_state(buffer):
+def save_state():
 	filename = "racingdata/" + "race" + str(time.time()) + ".txt"
 	print("Saving race data %s ..." % (filename))
 	with open(filename, 'wb') as file:
 		plk.dump(buffer, file)
-	buffer = []
+
+buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
-
 	while True:
 		C = Client(p=3101)
-
 		try:
 			ignore_steps = 10 # camera is rotating at the beginning
-			buffer = []
 			for step in range(C.maxSteps):
 				start = time.time()
 				C.get_servers_input()
-				drive_example(C, (step > ignore_steps), buffer)
+				drive_example(C, (step > ignore_steps))
 				C.respond_to_server()
 				end = time.time()
 				if step % 50 == 0:
 					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
-					save_state(buffer)
+					save_state()
 		except KeyboardInterrupt:
 			pass
-
 		C.shutdown()
 
 # later flip
