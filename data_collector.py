@@ -586,12 +586,10 @@ def processImage(vision):
 	#plt.pause(1)
 	return img
 
-def drive_example(c, observate):
+def drive(c, observate):
 	'''This is only an example. It will get around the track but the
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
-
-	print(S['lastLapTime'])
 
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
@@ -611,12 +609,11 @@ def drive_example(c, observate):
 	else:
 		R['accel']-= .01
 	if S['speedX']<10:
-	   R['accel']+= 1/(S['speedX']+.1)
+		R['accel']+= 1/(S['speedX']+.1)
 
 	# Traction Control System
-	if ((S['wheelSpinVel'][2]+S['wheelSpinVel'][3]) -
-	   (S['wheelSpinVel'][0]+S['wheelSpinVel'][1]) > 5):
-	   R['accel']-= .2
+	if ((S['wheelSpinVel'][2]+S['wheelSpinVel'][3]) - (S['wheelSpinVel'][0]+S['wheelSpinVel'][1]) > 5):
+		R['accel']-= .2
 
 	# Automatic Transmission
 	R['gear']=1
@@ -630,7 +627,8 @@ def drive_example(c, observate):
 		R['gear']=5
 	if S['speedX']>170:
 		R['gear']=6
-	return
+
+	return (S['lastLapTime'] > 0.0)
 
 
 def save_state(filename):
@@ -652,13 +650,15 @@ if __name__ == "__main__":
 			for step in range(C.maxSteps):
 				start = time.time()
 				C.get_servers_input()
-				drive_example(C, (step > ignore_steps))
+				endrace = drive(C, (step > ignore_steps))
 				C.respond_to_server()
 				end = time.time()
-				if step % 200 == 0:
+				if step % 200 == 0 or endrace:
 					print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
 					save_state(filename)
 					buffer = []
+					if endrace:
+						break
 		except KeyboardInterrupt:
 			pass
 		C.shutdown()
