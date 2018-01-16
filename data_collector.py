@@ -65,7 +65,9 @@ import pickle as plk
 from scripts.autostart import TorcsInstance
 
 PI= 3.14159265359
-target_speed=30
+target_speed = 30
+max_speed_test = 100
+speed_increase_rate = 10
 
 data_size = 2**17
 
@@ -642,12 +644,15 @@ buffer = []
 # ================ MAIN ================
 if __name__ == "__main__":
 	ignore_steps = 10  # camera is rotating at the beginning
+	track = 1
 	while True:
 		C = Client(p=3101)
+		if C.randomTrack:
+			track += 1
 		try:
-			while target_speed < 100:
+			while target_speed < max_speed_test:
 				buffer = []
-				filename = "racingdata/" + "race" + str(time.time()) + "#speed=" + str(target_speed) + ".txt"
+				filename = "racingdata/" + "race" + str(time.time()) + "#track="+track+"#speed=" + str(target_speed) + ".txt"
 				for step in range(C.maxSteps):
 					start = time.time()
 					C.get_servers_input()
@@ -660,7 +665,7 @@ if __name__ == "__main__":
 						buffer = []
 						if endrace:
 							break
-				target_speed = target_speed + 10
+				target_speed += speed_increase_rate
 				break
 		except KeyboardInterrupt:
 			pass
