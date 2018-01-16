@@ -641,10 +641,10 @@ buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
+	ignore_steps = 10  # camera is rotating at the beginning
 	while True:
 		C = Client(p=3101)
 		try:
-			ignore_steps = 10 # camera is rotating at the beginning
 			while target_speed < 100:
 				buffer = []
 				filename = "racingdata/" + "race" + str(time.time()) + "#speed=" + str(target_speed) + ".txt"
@@ -661,6 +661,7 @@ if __name__ == "__main__":
 						if endrace:
 							break
 				target_speed = target_speed + 10
+				break
 		except KeyboardInterrupt:
 			pass
 		C.shutdown()
