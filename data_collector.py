@@ -631,11 +631,11 @@ def drive_example(c, observate):
 	return
 
 
-def save_state():
-	filename = "racingdata/" + "race" + str(time.time()) + ".txt"
+def save_state(filename):
 	print("Saving race data %s ..." % (filename))
-	with open(filename, 'wb') as file:
+	with open(filename, 'ab') as file:
 		plk.dump(buffer, file)
+
 
 buffer = []
 
@@ -644,6 +644,8 @@ if __name__ == "__main__":
 	while True:
 		C = Client(p=3101)
 		try:
+			buffer = []
+			filename = "racingdata/" + "race" + str(time.time()) + ".txt"
 			ignore_steps = 10 # camera is rotating at the beginning
 			for step in range(C.maxSteps):
 				start = time.time()
@@ -652,10 +654,11 @@ if __name__ == "__main__":
 				C.respond_to_server()
 				end = time.time()
 				if step % 50 == 0:
-					print("Runned user frame in %fs, step %d/%d" % (end-start, step, C.maxSteps))
+					print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
+					save_state(filename)
+					buffer = []
 		except KeyboardInterrupt:
 			pass
-		save_state()
 		C.shutdown()
 
 # later flip
