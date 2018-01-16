@@ -537,6 +537,8 @@ def drive_example(c):
 	# Steer To Center
 	R['steer']-= S['trackPos']*.10
 
+	print(S['lastLapTime'])
+
 
 	# Throttle Control
 	if S['speedX'] < target_speed - (R['steer']*50):
