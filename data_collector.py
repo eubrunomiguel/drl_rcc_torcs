@@ -653,7 +653,7 @@ if __name__ == "__main__":
 				drive_example(C, (step > ignore_steps))
 				C.respond_to_server()
 				end = time.time()
-				if step % 50 == 0:
+				if step % 200 == 0:
 					print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
 					save_state(filename)
 					buffer = []
