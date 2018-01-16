@@ -591,6 +591,8 @@ def drive_example(c, observate):
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
 
+	print(S['lastLapTime'])
+
 	observation = make_observaton(S)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
 	img = processImage(vision)
