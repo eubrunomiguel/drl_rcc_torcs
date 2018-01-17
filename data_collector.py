@@ -672,7 +672,6 @@ if __name__ == "__main__":
 				C.shutdown()
 			except KeyboardInterrupt:
 				pass
-			target_speed += speed_increase_rate
 		track += 1
 		target_speed = initial_speed
 		torcs_instance = TorcsInstance()
