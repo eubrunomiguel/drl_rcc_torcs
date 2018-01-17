@@ -65,7 +65,9 @@ import pickle as plk
 from scripts.autostart import TorcsInstance
 
 PI= 3.14159265359
-target_speed = 30
+
+initial_speed = 30
+target_speed = initial_speed
 max_speed_test = 100
 speed_increase_rate = 10
 
@@ -126,7 +128,7 @@ def bargraph(x,mn,mx,w,c='X'):
 	return '[%s]' % (nnc+npc+ppc+pnc)
 
 class Client():
-	def __init__(self,H=None,p=None,i=None,e=None,t=None,s=None,d=None,vision=True):
+	def __init__(self,H=None,p=None,i=None,e=None,t=None,s=None,d=None, vision=True):
 		# If you don't like the option defaults,  change them here.
 		self.vision = vision
 
@@ -162,7 +164,7 @@ class Client():
 		self.so.settimeout(1)
 
 		torcs_instance = TorcsInstance()
-		torcs_instance.start(random_track=self.randomTrack)
+		torcs_instance.start()
 
 		n_fail = 2
 		while True:
@@ -185,8 +187,8 @@ class Client():
 				print("Waiting for server on %d............" % self.port)
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
-					torcs_instance.start(random_track=self.randomTrack)
-					n_fail = 5
+					torcs_instance.start()
+					n_fail = 2
 				n_fail -= 1
 
 			identify = '***identified***'
@@ -643,16 +645,17 @@ buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
+
 	ignore_steps = 10  # camera is rotating at the beginning
 	track = 1
+	next_track = False
+
 	while True:
-		C = Client(p=3101)
-		if C.randomTrack:
-			track += 1
-		try:
-			while target_speed < max_speed_test:
+		while target_speed < max_speed_test:
+			try:
+				C = Client(p=3101)
 				buffer = []
-				filename = "racingdata/" + "race" + str(time.time()) + "#track="+str(track)+"#speed=" + str(target_speed) + ".txt"
+				filename = "racingdata/" + "race" + str(time.time()) + "#track=" + str(track) + "#speed=" + str(target_speed) + ".txt"
 				for step in range(C.maxSteps):
 					start = time.time()
 					C.get_servers_input()
@@ -660,16 +663,20 @@ if __name__ == "__main__":
 					C.respond_to_server()
 					end = time.time()
 					if step % 200 == 0 or endrace:
-						print("Runned user frame in %fs, step %d/%d, data count %d" % (end-start, step, C.maxSteps, len(buffer)))
+						print("Runned user frame in %fs, step %d/%d, data count %d" % (end - start, step, C.maxSteps, len(buffer)))
 						save_state(filename)
 						buffer = []
 						if endrace:
 							break
 				target_speed += speed_increase_rate
-				break
-		except KeyboardInterrupt:
-			pass
-		C.shutdown()
+				C.shutdown()
+			except KeyboardInterrupt:
+				pass
+			target_speed += speed_increase_rate
+		track += 1
+		target_speed = initial_speed
+		torcs_instance = TorcsInstance()
+		torcs_instance.changeTrack()
 
 # later flip
 # later shuffle to lose correlation
