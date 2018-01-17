@@ -637,7 +637,7 @@ def drive(c, observate):
 
 def save_state(filename):
 	print("Saving race data %s ..." % (filename))
-	with open(filename, 'ab') as file:
+	with open(filename, 'wb') as file:
 		plk.dump(buffer, file)
 
 
@@ -656,18 +656,17 @@ if __name__ == "__main__":
 				C = Client(p=3101)
 				buffer = []
 				filename = "racingdata/" + "race" + str(time.time()) + "#track=" + str(track) + "#speed=" + str(target_speed) + ".txt"
+				start = time.time()
 				for step in range(C.maxSteps):
-					start = time.time()
 					C.get_servers_input()
 					endrace = drive(C, (step > ignore_steps))
 					C.respond_to_server()
-					end = time.time()
-					if step % 200 == 0 or endrace:
-						print("Runned user frame in %fs, step %d/%d, data count %d" % (end - start, step, C.maxSteps, len(buffer)))
+					if endrace:
+						end = time.time()
+						print("Runned race in %fs, steps %d/%d, data count %d" % (end - start, step, C.maxSteps, len(buffer)))
 						save_state(filename)
 						buffer = []
-						if endrace:
-							break
+						break
 				target_speed += speed_increase_rate
 				C.shutdown()
 			except KeyboardInterrupt:
