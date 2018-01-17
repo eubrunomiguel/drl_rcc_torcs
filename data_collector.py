@@ -166,7 +166,7 @@ class Client():
 		torcs_instance = TorcsInstance()
 		torcs_instance.start()
 
-		n_fail = 2
+		n_fail = 5
 		while True:
 			# This string establishes track sensor angles! You can customize them.
 			#a= "-90 -75 -60 -45 -30 -20 -15 -10 -5 0 5 10 15 20 30 45 60 75 90"
@@ -188,7 +188,7 @@ class Client():
 				print("Count Down : " + str(n_fail))
 				if n_fail < 0:
 					torcs_instance.start()
-					n_fail = 2
+					n_fail = 5
 				n_fail -= 1
 
 			identify = '***identified***'
