@@ -23,19 +23,15 @@ class Solver(object):
         Resets train and val histories for the accuracy and the loss.
         """
         self.train_loss_history = []
-        self.train_acc_history = []
-        self.val_acc_history = []
-        self.val_loss_history = []
         
 
-    def train(self, model, train_data, val_data, num_epochs=10, log_nth=0):
+    def train(self, model, train_data, num_epochs=10, log_nth=0):
         """
         Train a given model with the provided data.
 
         Inputs:
         - model: model object initialized from a torch.nn.Module
         - train_data: train data
-        - val_data: val data
         - num_epochs: total number of training epochs
         - log_nth: log training accuracy and loss every nth iteration
         """
@@ -74,24 +70,5 @@ class Solver(object):
             atrain_loss = np.mean(np.mean(self.train_loss_history)
             if log_nth:
                 print('[Epoch %d/%d] TRAIN loss: %.3f' % (epoch + 1,num_epochs,atrain_loss))
-            
-            # VALIDATION
-            val_losses = []
-            val_scores = []
-            model.eval()
-            for inputs, targets in val_data:
-                inputs, targets = Variable(inputs), Variable(targets)
-                if model.is_cuda:
-                    inputs, targets = inputs.cuda(), targets.cuda()
-
-                outputs = model.forward(inputs)
-                loss = self.loss_func(outputs, targets)
-                val_losses.append(loss.data.cpu().numpy())
-
-            model.train()
-            val_loss = np.mean(val_losses)
-            self.val_loss_history.append(val_loss)
-            if log_nth:
-                print('[Epoch %d/%d] VAL loss: %.3f' % (epoch + 1,num_epochs,val_loss))
-        
+                   
         print('FINISH.')
