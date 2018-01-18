@@ -31,8 +31,6 @@ class Solver(object):
             
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
-                inputs.double()
-                targets.double()
                 inputs, targets = Variable(inputs.float()), Variable(targets.float())
                 
                 if model.is_cuda:
