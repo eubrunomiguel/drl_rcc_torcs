@@ -34,7 +34,10 @@
 * to get from little screen to big screen: down, down, enter; down, enter; right, right, enter; enter
 * run with command line --random option to enable random track selector
 
+### Training Data
+* https://www.dropbox.com/s/qsl348z3x9vrn3e/racingdata.zip?dl=0
+
 ### todo
-* preprocess image, image augmentation,  road segmentation
+* image augmentation,  road segmentation
 * test network and solver
 * adjust hyperparameters
