@@ -647,7 +647,7 @@ buffer = []
 if __name__ == "__main__":
 
 	ignore_steps = 10  # camera is rotating at the beginning
-	track = 1
+	track = 4
 	next_track = False
 
 	while True:
