@@ -40,6 +40,7 @@ def getDrivingData(file_name, num_training_percentage=80, num_validation_percent
 		X = np.array(X)
 		Y = np.array(Y)
 		X = X.transpose(0, 3, 1, 2)
+        
 
 	# preprocess
 	X /= 255.0
@@ -61,7 +62,7 @@ def getDrivingData(file_name, num_training_percentage=80, num_validation_percent
 	return DrivingData(X_train, y_train), DrivingData(X_val, y_val)
 
 
-getDrivingData("race1515861815.769681.txt")
+#getDrivingData("race1515861815.769681.txt")
 
 # USAGE
 
