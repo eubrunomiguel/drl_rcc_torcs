@@ -47,6 +47,8 @@ class Solver(object):
             
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
+                inputs = numpy.asarray(inputs)
+                inputs = inputs.T
                 inputs, targets = Variable(inputs), Variable(targets)
                 if model.is_cuda:
                     inputs, targets = inputs.cuda(), targets.cuda()
