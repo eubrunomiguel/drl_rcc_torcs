@@ -4,28 +4,12 @@ from torch.autograd import Variable
 
 
 class Solver(object):
-    default_sgd_args = {"lr": 1e-4,
-                         "momentum": 0.99,
-                         "weight_decay": 5e-4}
     
-    def __init__(self, optim=torch.optim.SGD, optim_args={},
-                 loss_func=torch.nn.MSELoss(),size_average=False):
-        optim_args_merged = self.default_sgd_args.copy()
-        optim_args_merged.update(optim_args)
-        self.optim_args = optim_args_merged
-        self.optim = optim
+    def __init__(self, loss_func=torch.nn.MSELoss(),size_average=False):
         self.loss_func = loss_func
-
-        self._reset_histories()
-
-    def _reset_histories(self):
-        """
-        Resets train and val histories for the accuracy and the loss.
-        """
-        self.train_loss_history = []
         
 
-    def train(self, model, train_data, num_epochs=10, log_nth=0):
+    def train(self, model, train_data, learning_rate=1e-2, num_epochs=10, log_nth=0):
         """
         Train a given model with the provided data.
 
@@ -35,8 +19,8 @@ class Solver(object):
         - num_epochs: total number of training epochs
         - log_nth: log training accuracy and loss every nth iteration
         """
-        optim = self.optim()
-        self._reset_histories()
+        optim = torch.optim.Adam(model.parameters(), lr = learning_rate)
+        self.train_loss_history = []
         iter_per_epoch = len(train_data)
 
         if torch.cuda.is_available():
@@ -47,9 +31,10 @@ class Solver(object):
             
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
-                inputs = numpy.asarray(inputs)
-                inputs = inputs.T
-                inputs, targets = Variable(inputs), Variable(targets)
+                inputs.double()
+                targets.double()
+                inputs, targets = Variable(inputs.float()), Variable(targets.float())
+                
                 if model.is_cuda:
                     inputs, targets = inputs.cuda(), targets.cuda()
 
@@ -69,7 +54,7 @@ class Solver(object):
                          iter_per_epoch * num_epochs,
                          train_loss))
                 
-            atrain_loss = np.mean(np.mean(self.train_loss_history)
+            atrain_loss = np.mean(self.train_loss_history)
             if log_nth:
                 print('[Epoch %d/%d] TRAIN loss: %.3f' % (epoch + 1,num_epochs,atrain_loss))
                    
