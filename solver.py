@@ -29,7 +29,9 @@ class Solver(object):
             
         print('START TRAIN.')
         for epoch in range(num_epochs):
-            
+          
+            acc_history = []
+            loss_history = []
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
                 inputs, targets = Variable(inputs.float()), Variable(targets.float())
@@ -38,28 +40,27 @@ class Solver(object):
                     inputs, targets = inputs.cuda(), targets.cuda()
 
                 optim.zero_grad()
-                outputs = model(inputs)               
+                outputs = model(inputs) 
+                outputs = outputs[:,0,0,0]
                 loss = self.loss_func(outputs, targets)
                 
                 loss.backward()
                 optim.step()
 
-                self.train_loss_history.append(loss.data.cpu().numpy())
+                loss_history.append(loss.data.cpu().numpy())
                 if log_nth and i % log_nth == 0:
-                    last_log_nth_losses = self.train_loss_history[-log_nth:]
+                    last_log_nth_losses = loss_history[-log_nth:]
                     train_loss = np.mean(last_log_nth_losses)
                     print('[Iteration %d/%d] TRAIN loss: %.3f' % \
                         (i + epoch * iter_per_epoch,
                          iter_per_epoch * num_epochs,
                          train_loss))
-                    
-                end, begin = 1.1 * outputs, 0.9*outputs
-                mask1, mask2 = targets >= begin, targets <=end
                 
-                train_acc = np.mean((mask1*mask2).data.cpu().numpy())
-                self.train_acc_history.append(train_acc)
+                acc_history += getAccuracy(targets, outputs, 10)
                 
-            atrain_acc, atrain_loss = np.mean(self.train_acc_history), np.mean(self.train_loss_history)
+            atrain_acc, atrain_loss = np.mean(acc_history), np.mean(loss_history)
+            self.train_loss_history.append(atrain_loss)
+            self.train_acc_history.append(atrain_acc)
             if log_nth:
                 print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1,
                                                                    num_epochs,
@@ -67,3 +68,15 @@ class Solver(object):
                                                                    atrain_loss))
                 
         print('FINISH.')
+        
+def getAccuracy(label, output, range_percentage):
+    num_examples = label.data.shape[0]
+    end = label * (1 + range_percentage/100.0)
+    begin = label * (1 - range_percentage/100.0)
+    accuracy = [0 for x in range(num_examples)]
+    for i in range(num_examples):
+        if label[i].data[0] > 0 and begin[i].data[0] <= output[i].data[0] <= end[i].data[0]:
+            accuracy[i] = 1
+        if label[i].data[0] < 0 and end[i].data[0] <= output[i].data[0] <= begin[i].data[0]:
+            accuracy[i] = 1
+    return accuracy
