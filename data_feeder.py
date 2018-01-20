@@ -100,7 +100,8 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	if augumentation:
 		X_train_flipped = np.flip(X_train, 2)
 		X_train = np.concatenate((X_train, X_train_flipped), 0)
-		y_train = np.concatenate((y_train, y_train), 0)
+		y_train_flipped = y_train * -1
+		y_train = np.concatenate((y_train, y_train_flipped), 0)
 
 
 	# validation load
