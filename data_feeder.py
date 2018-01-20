@@ -113,7 +113,8 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	X -= np.mean(X, axis=0)
 
 	# Transpose so that channels come first
-	X = X.transpose(0, 3, 1, 2)
+	X_train = X_train.transpose(0, 3, 1, 2)
+	X_val = X_val.transpose(0, 3, 1, 2)
 
 	print("Number of training examples %d" % (X_train.shape[0]))
 
