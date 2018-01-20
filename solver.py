@@ -29,7 +29,9 @@ class Solver(object):
             
         print('START TRAIN.')
         for epoch in range(num_epochs):
-            
+          
+            acc_history = []
+            loss_history = []
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
                 inputs, targets = Variable(inputs.float()), Variable(targets.float())
@@ -38,25 +40,27 @@ class Solver(object):
                     inputs, targets = inputs.cuda(), targets.cuda()
 
                 optim.zero_grad()
-                outputs = model(inputs)               
+                outputs = model(inputs) 
+                outputs = outputs[:,0,0,0]
                 loss = self.loss_func(outputs, targets)
                 
                 loss.backward()
                 optim.step()
 
-                self.train_loss_history.append(loss.data.cpu().numpy())
+                loss_history.append(loss.data.cpu().numpy())
                 if log_nth and i % log_nth == 0:
-                    last_log_nth_losses = self.train_loss_history[-log_nth:]
+                    last_log_nth_losses = loss_history[-log_nth:]
                     train_loss = np.mean(last_log_nth_losses)
                     print('[Iteration %d/%d] TRAIN loss: %.3f' % \
                         (i + epoch * iter_per_epoch,
                          iter_per_epoch * num_epochs,
                          train_loss))
                 
-                accuracy = getAccuracy(targets, outputs, 10)
-                self.train_acc_history.append(accuracy)
+                acc_history += getAccuracy(targets, outputs, 10)
                 
-            atrain_acc, atrain_loss = np.mean(self.train_acc_history), np.mean(self.train_loss_history)
+            atrain_acc, atrain_loss = np.mean(acc_history), np.mean(loss_history)
+            self.train_loss_history.append(atrain_loss)
+            self.train_acc_history.append(atrain_acc)
             if log_nth:
                 print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1,
                                                                    num_epochs,
