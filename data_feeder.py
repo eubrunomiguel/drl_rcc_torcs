@@ -4,6 +4,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 import pickle as plk
+import matplotlib.pyplot as plt
 
 
 class DrivingData(Dataset):
@@ -26,7 +27,7 @@ class DrivingData(Dataset):
 		return len(self.Y)
 
 
-def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32, augumentation=True):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
@@ -38,14 +39,6 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	If speed and track are set, return the specific file
 	"""
 
-<<<<<<< HEAD
-	with open(file_name, 'rb') as file:
-		racedata = plk.load(file)
-		X, Y = zip(*racedata)
-		X = np.array(X)
-		Y = np.array(Y)
-		X = X.transpose(0, 3, 1, 2)
-=======
 	tracks = [0, 1, 2, 3, 4]
 	speeds = [0, 30, 40, 50, 60, 70, 80, 90]
 	filenames = []
@@ -93,27 +86,36 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 
 	X = np.array(X)
 	Y = np.array(Y)
-	X = X.transpose(0, 3, 1, 2)
->>>>>>> c35f3a318580908ec5b6791ab1f6392fc86e4daa
+
+	# subsample masks
+	totalSamples = X.shape[0]
+	num_train = int(totalSamples * (num_training_percentage / 100))
+	num_validation = int(totalSamples * (num_validation_percentage / 100))
+
+	# training load
+	mask = range(num_train)
+	X_train = X[mask]
+	y_train = Y[mask]
+
+	if augumentation:
+		X_train_flipped = np.flip(X_train, 2)
+		X_train = np.concatenate((X_train, X_train_flipped), 0)
+		y_train = np.concatenate((y_train, y_train), 0)
+
+
+	# validation load
+	mask = range(num_train, num_train + num_validation)
+	X_val = X[mask]
+	y_val = Y[mask]
 
 	# preprocess
 	X /= 255.0
 	X -= np.mean(X, axis=0)
 
-	# subsample
-	totalSamples = X.shape[0]
-	num_train = int(totalSamples * (num_training_percentage / 100))
-	num_validation = int(totalSamples * (num_validation_percentage / 100))
+	# Transpose so that channels come first
+	X = X.transpose(0, 3, 1, 2)
 
-	mask = range(num_train)
-	X_train = X[mask]
-	y_train = Y[mask]
-
-	mask = range(num_train, num_train + num_validation)
-	X_val = X[mask]
-	y_val = Y[mask]
-
-	print("Number of examples %d" % (X.shape[0]))
+	print("Number of training examples %d" % (X_train.shape[0]))
 
 	return DrivingData(X_train, y_train), DrivingData(X_val, y_val)
 
