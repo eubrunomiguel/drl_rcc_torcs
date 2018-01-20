@@ -21,6 +21,7 @@ class Solver(object):
         """
         optim = torch.optim.Adam(model.parameters(), lr = learning_rate)
         self.train_loss_history = []
+        self.train_acc_history = []
         iter_per_epoch = len(train_data)
 
         if torch.cuda.is_available():
@@ -51,9 +52,18 @@ class Solver(object):
                         (i + epoch * iter_per_epoch,
                          iter_per_epoch * num_epochs,
                          train_loss))
+                    
+                end, begin = 1.1 * outputs, 0.9*outputs
+                mask1, mask2 = targets >= begin, targets <=end
                 
-            atrain_loss = np.mean(self.train_loss_history)
+                train_acc = np.mean((mask1*mask2).data.cpu().numpy())
+                self.train_acc_history.append(train_acc)
+                
+            atrain_acc, atrain_loss = np.mean(self.train_acc_history), np.mean(self.train_loss_history)
             if log_nth:
-                print('[Epoch %d/%d] TRAIN loss: %.3f' % (epoch + 1,num_epochs,atrain_loss))
-                   
+                print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1,
+                                                                   num_epochs,
+                                                                   atrain_acc,
+                                                                   atrain_loss))
+                
         print('FINISH.')
