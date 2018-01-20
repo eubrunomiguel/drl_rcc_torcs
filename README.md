@@ -35,7 +35,7 @@
 * run with command line --random option to enable random track selector
 
 ### Training Data
-* https://www.dropbox.com/s/qsl348z3x9vrn3e/racingdata.zip?dl=0
+* https://www.dropbox.com/s/r7ln2y2plyezjy0/racingdata.zip?dl=0
 
 ### todo
 * image augmentation,  road segmentation
