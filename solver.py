@@ -52,12 +52,9 @@ class Solver(object):
                         (i + epoch * iter_per_epoch,
                          iter_per_epoch * num_epochs,
                          train_loss))
-                    
-                end, begin = 1.1 * outputs, 0.9*outputs
-                mask1, mask2 = targets >= begin, targets <=end
                 
-                train_acc = np.mean((mask1*mask2).data.cpu().numpy())
-                self.train_acc_history.append(train_acc)
+                accuracy = getAccuracy(targets, outputs, 10)
+                self.train_acc_history.append(accuracy)
                 
             atrain_acc, atrain_loss = np.mean(self.train_acc_history), np.mean(self.train_loss_history)
             if log_nth:
@@ -67,3 +64,15 @@ class Solver(object):
                                                                    atrain_loss))
                 
         print('FINISH.')
+        
+def getAccuracy(label, output, range_percentage):
+    num_examples = label.data.shape[0]
+    end = label * (1 + range_percentage/100.0)
+    begin = label * (1 - range_percentage/100.0)
+    accuracy = [0 for x in range(num_examples)]
+    for i in range(num_examples):
+        if label[i].data[0] > 0 and begin[i].data[0] <= output[i].data[0] <= end[i].data[0]:
+            accuracy[i] = 1
+        if label[i].data[0] < 0 and end[i].data[0] <= output[i].data[0] <= begin[i].data[0]:
+            accuracy[i] = 1
+    return accuracy
