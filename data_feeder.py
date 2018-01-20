@@ -26,21 +26,66 @@ class DrivingData(Dataset):
 		return len(self.Y)
 
 
-def getDrivingData(file_name, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
 	Rescale the features and subtract the mean.
 	Return a tuble of Dataset objects, in respect to <training:validation>.
+	If speed is set and track not set, then return all tracks with that speed
+	If track is set and speed not set, then return all data from the track
+	If speed and track are not set, return all data
+	If speed and track are set, return the specific file
 	"""
 
-	with open(file_name, 'rb') as file:
-		racedata = plk.load(file)
-		X, Y = zip(*racedata)
-		X = np.array(X)
-		Y = np.array(Y)
-		X = X.transpose(0, 3, 1, 2)
-        
+	tracks = [0, 1, 2, 3, 4]
+	speeds = [0, 30, 40, 50, 60, 70, 80, 90]
+	filenames = []
+
+	if speed not in speeds or track not in tracks:
+		print("Data could not be found for track %d and speed %d" % (track, speed))
+		exit()
+
+	# If speed and track are set, return the specific file
+	if speed is not 0 and track is not 0:
+		filenames.append("racingdata/#track=%d#speed=%d.txt" % (track, speed))
+
+	# If speed is set and track not set, then return all tracks with that speed
+	if speed is not 0 and track is 0:
+		for t in tracks:
+			if t == 0:
+				continue
+			filenames.append("racingdata/#track=%d#speed=%d.txt" % (t, speed))
+
+	# If track is set and speed not set, then return all data from the track
+	if speed is 0 and track is not 0:
+		for s in speeds:
+			if s == 0:
+				continue
+			filenames.append("racingdata/#track=%d#speed=%d.txt" % (track, s))
+
+	# If speed and track are not set, return all data
+	if speed is 0 and track is 0:
+		for t in tracks:
+			for s in speeds:
+				if t == 0 or s == 0:
+					continue
+				filenames.append("racingdata/#track=%d#speed=%d.txt" % (t, s))
+
+
+	X = []
+	Y = []
+
+	for filename in filenames:
+		with open(filename, 'rb') as file:
+			racedata = plk.load(file)
+			x, y = zip(*racedata)
+			X += x
+			Y += y
+
+	X = np.array(X)
+	Y = np.array(Y)
+	X = X.transpose(0, 3, 1, 2)
 
 	# preprocess
 	X /= 255.0
@@ -58,6 +103,8 @@ def getDrivingData(file_name, num_training_percentage=80, num_validation_percent
 	mask = range(num_train, num_train + num_validation)
 	X_val = X[mask]
 	y_val = Y[mask]
+
+	print("Number of examples %d" % (X.shape[0]))
 
 	return DrivingData(X_train, y_train), DrivingData(X_val, y_val)
 
