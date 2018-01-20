@@ -40,7 +40,6 @@ def getDrivingData(file_name, num_training_percentage=80, num_validation_percent
 		X = np.array(X)
 		Y = np.array(Y)
 		X = X.transpose(0, 3, 1, 2)
-        
 
 	# preprocess
 	X /= 255.0
