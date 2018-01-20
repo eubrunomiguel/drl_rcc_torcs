@@ -4,7 +4,6 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 import pickle as plk
-import matplotlib.pyplot as plt
 
 
 class DrivingData(Dataset):
@@ -27,7 +26,7 @@ class DrivingData(Dataset):
 		return len(self.Y)
 
 
-def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32, augumentation=True):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
@@ -38,6 +37,7 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	If speed and track are not set, return all data
 	If speed and track are set, return the specific file
 	"""
+
 
 	tracks = [0, 1, 2, 3, 4]
 	speeds = [0, 30, 40, 50, 60, 70, 80, 90]
@@ -86,37 +86,27 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 
 	X = np.array(X)
 	Y = np.array(Y)
+	X = X.transpose(0, 3, 1, 2)
 
-	# subsample masks
-	totalSamples = X.shape[0]
-	num_train = int(totalSamples * (num_training_percentage / 100))
-	num_validation = int(totalSamples * (num_validation_percentage / 100))
-
-	# training load
-	mask = range(num_train)
-	X_train = X[mask]
-	y_train = Y[mask]
-
-	if augumentation:
-		X_train_flipped = np.flip(X_train, 2)
-		X_train = np.concatenate((X_train, X_train_flipped), 0)
-		y_train_flipped = y_train * -1
-		y_train = np.concatenate((y_train, y_train_flipped), 0)
-
-
-	# validation load
-	mask = range(num_train, num_train + num_validation)
-	X_val = X[mask]
-	y_val = Y[mask]
 
 	# preprocess
 	X /= 255.0
 	X -= np.mean(X, axis=0)
 
-	# Transpose so that channels come first
-	X_train = X_train.transpose(0, 3, 1, 2)
+	# subsample
+	totalSamples = X.shape[0]
+	num_train = int(totalSamples * (num_training_percentage / 100))
+	num_validation = int(totalSamples * (num_validation_percentage / 100))
 
-	print("Number of training examples %d" % (X_train.shape[0]))
+	mask = range(num_train)
+	X_train = X[mask]
+	y_train = Y[mask]
+
+	mask = range(num_train, num_train + num_validation)
+	X_val = X[mask]
+	y_val = Y[mask]
+
+	print("Number of examples %d" % (X.shape[0]))
 
 	return DrivingData(X_train, y_train), DrivingData(X_val, y_val)
 
