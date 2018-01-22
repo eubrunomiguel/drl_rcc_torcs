@@ -30,11 +30,21 @@ num_examples = X.shape[0]
 
 test = np.array([[1*1,2*1],[1*2,2*2],[1*3,2*3],[1*4,2*4]])
 
-print(np.mean(test, axis=(1,2,3)))
-exit()
+def rgb2gray(rgb):
+    """Convert RGB image to grayscale
+
+      Parameters:
+        rgb : RGB image
+
+      Returns:
+        gray : grayscale image
+
+    """
+    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
+	img = rgb2gray(img)
 	# img = np.mean(img, -1)
 	plt.imshow(img, origin='lower')
 	plt.draw()
