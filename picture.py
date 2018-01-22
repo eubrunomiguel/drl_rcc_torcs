@@ -30,7 +30,7 @@ num_examples = X.shape[0]
 
 test = np.array([[1*1,2*1],[1*2,2*2],[1*3,2*3],[1*4,2*4]])
 
-print(np.mean(test, (1,2,3)))
+print(np.mean(test, axis=(1,2,3)))
 exit
 
 for i in range(num_examples):
