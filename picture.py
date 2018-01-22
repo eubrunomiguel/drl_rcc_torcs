@@ -50,7 +50,7 @@ X = reduceDimRGBtoGray(X)
 
 print(X.shape)
 
-img = X[0,:,:,:]
+img = X[0,:,:,0]
 plt.imshow(img, origin='lower')
 plt.draw()
 plt.pause(1)
