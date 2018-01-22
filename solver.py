@@ -57,7 +57,7 @@ class Solver(object):
 
             total_time = time.time() - start
 
-            print('[Epoch %d/%d] Executation: %.3f TRAIN acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, total_time, train_acc, train_loss))
+            print('[Epoch %d/%d/%.3fs] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, total_time, train_acc, train_loss))
 
         print('FINISH.')
         return self.train_acc_history, self.train_loss_history
