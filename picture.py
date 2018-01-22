@@ -44,7 +44,7 @@ X = np.array(X)
 Y = np.array(Y)
 
 for i in range(X.shape[0]):
-	X[i] = rgb2gray(X[i])
+	X[i, :, :, 0] = rgb2gray(X[i])
 
 print(X.shape)
 
