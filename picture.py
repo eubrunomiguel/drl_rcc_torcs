@@ -48,7 +48,7 @@ for i in range(X.shape[0]):
 
 print(X.shape)
 
-img = X[0,:,:,:]
+img = X[0,:,:,0]
 plt.imshow(img, origin='lower')
 plt.draw()
 plt.pause(1)
