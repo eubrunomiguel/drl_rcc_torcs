@@ -67,3 +67,14 @@ class DrivingNN(nn.Module):
 		fan_in = size[1]  # number of columns
 		variance = np.sqrt(2.0 / (fan_in + fan_out))
 		m.weight.data.normal_(0.0, variance)
+
+	def num_flat_features(self, x):
+		"""
+		Computes the number of features if the spatial input x is transformed
+		to a 1D flat input.
+		"""
+		size = x.size()[1:]  # all dimensions except the batch dimension
+		num_features = 1
+		for s in size:
+			num_features *= s
+		return num_features
