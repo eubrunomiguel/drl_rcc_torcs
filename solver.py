@@ -19,6 +19,7 @@ class Solver(object):
         - num_epochs: total number of training epochs
         - log_nth: log training accuracy and loss every nth iteration
         """
+        optim = self.optim(filter(lambda x: x.requires_grad,model.parameters()), **self.optim_args)
         optim = torch.optim.Adam(model.parameters(), lr = learning_rate)
         self.train_loss_history = []
         self.train_acc_history = []
