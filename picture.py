@@ -30,7 +30,7 @@ num_examples = X.shape[0]
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
-	F.to_
+	F.to_grayscale(img, 1)
 	# img = np.mean(img, -1)
 	plt.imshow(img, origin='lower')
 	plt.draw()
