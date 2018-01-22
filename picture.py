@@ -29,6 +29,7 @@ for i in range(num_examples):
 	img = X[i,:,:,:]
 	r, g, b = img[:, :, 0], img[:, :, 1], img[:, :, 2]
 	img = 0.2989 * r + 0.5870 * g + 0.1140 * b
+	print (img.shape)
 	plt.imshow(img, origin='lower')
 	plt.draw()
 	plt.pause(1)
