@@ -5,6 +5,8 @@ import torch
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
 
+#hello
+
 train_data, val_data = getDrivingData(speed=30, track=0)
 
 train_loader = torch.utils.data.DataLoader(train_data, batch_size=50, shuffle=True, num_workers=0)
