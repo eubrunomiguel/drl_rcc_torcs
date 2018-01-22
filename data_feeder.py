@@ -26,6 +26,18 @@ class DrivingData(Dataset):
 		return len(self.Y)
 
 
+def rgb2gray(rgb):
+    """Convert RGB image to grayscale
+
+      Parameters:
+        rgb : RGB image
+
+      Returns:
+        gray : grayscale image
+
+    """
+    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+
 def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32, preprocess=True, greyscale=False, augmentation=False):
 	"""
 	Load and preprocess the training dataset.
