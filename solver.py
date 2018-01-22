@@ -57,6 +57,7 @@ class Solver(object):
             print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, train_acc, train_loss))
 
         print('FINISH.')
+        return self.train_acc_history, self.train_loss_history
         
 def getAccuracy(label, output, range_percentage):
     num_examples = label.data.shape[0]
