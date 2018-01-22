@@ -37,6 +37,8 @@ class DrivingNN(nn.Module):
 		if self.pretrained_model is not None:
 			x = self.pretrained_model(x)
 
+		print (x.shape)
+
 		x = self.classifier(x)
 
 		return x
