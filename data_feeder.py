@@ -26,7 +26,7 @@ class DrivingData(Dataset):
 		return len(self.Y)
 
 
-def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32, preprocess=True, greyscale=False, auguntation=Fa;se):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
