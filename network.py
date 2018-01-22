@@ -35,7 +35,6 @@ class DrivingNN(nn.Module):
 			x = self.pretrained_model(x)
 
 		print ("After", x.shape)
-		return x
 
 		x = self.classifier(x)
 
