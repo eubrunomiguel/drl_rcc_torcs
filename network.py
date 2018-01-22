@@ -14,7 +14,7 @@ class DrivingNN(nn.Module):
 				param.requires_grad = False
 
 		self.classifier = nn.Sequential(
-			nn.Linear(512*4*4, 1024),
+			nn.Linear(512*2*2, 1024),
 			nn.ReLU(),
 			nn.Linear(1024, 512),
 			nn.ReLU(),
