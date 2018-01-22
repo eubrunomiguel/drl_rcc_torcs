@@ -26,8 +26,6 @@ class Solver(object):
         self.train_loss_history = []
         self.train_acc_history = []
 
-        iter_per_epoch = len(train_data)
-
         if torch.cuda.is_available():
             print("Cuda available")
             model.cuda()
@@ -48,14 +46,6 @@ class Solver(object):
                 loss = self.loss_func(outputs, targets)
                 loss.backward()
                 optim.step()
-
-                if log_nth and i % log_nth == 0:
-                    last_log_nth_losses = loss_history[-log_nth:]
-                    train_loss = np.mean(last_log_nth_losses)
-                    print('[Iteration %d/%d] TRAIN loss: %.3f' % \
-                        (i + epoch * iter_per_epoch,
-                         iter_per_epoch * num_epochs,
-                         train_loss))
 
                 loss_history.append(loss.data.cpu().numpy())
                 acc_history += getAccuracy(targets, outputs, 10)
