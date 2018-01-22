@@ -27,7 +27,10 @@ X, Y = getDrivingData("race1516207298.txt")
 
 num_examples = X.shape[0]
 
-print(X.shape)
+def augmentation(inputs, labels):
+	inputs_flipped = np.flip(inputs, 2)
+	labels_flipped = labels * -1
+	return np.concatenate((inputs, inputs_flipped), 0), np.concatenate((labels, labels_flipped), 0)
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
