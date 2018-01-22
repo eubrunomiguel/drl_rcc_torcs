@@ -110,7 +110,9 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 
 	# greyscale
 	if greyscale:
-		pass
+		for i in range(X.shape[0]):
+			X[i, :, :, 0] = rgb2gray(X[i])
+		X = reduceDimRGBtoGray(X)
 
 	# augmentation
 	if augmentation:
