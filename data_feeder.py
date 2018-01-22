@@ -41,6 +41,12 @@ def rgb2gray(rgb):
 def reduceDimRGBtoGray(arr):
 	return arr[:, :, :, :-2]
 
+def augmentation(inputs, labels):
+	inputs_flipped = np.flip(inputs, 2)
+	inputs = np.concatenate((inputs, inputs_flipped), 0)
+	labels_flipped = labels * -1
+	inputs = np.concatenate((labels, labels_flipped), 0)
+
 
 def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, preprocess=True, greyscale=False, augmentation=False):
 	"""
