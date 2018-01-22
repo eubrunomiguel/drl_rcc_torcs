@@ -49,6 +49,7 @@ class Solver(object):
                 optim.step()
 
                 loss_history.append(loss.data.cpu().numpy())
+                print("loss %f " % (loss.data.cpu().numpy()))
                 acc_history += getAccuracy(targets, outputs, 10)
                 
             train_acc, train_loss = np.mean(acc_history), np.mean(loss_history)
