@@ -32,6 +32,8 @@ def augmentation(inputs, labels):
 	labels_flipped = labels * -1
 	return np.concatenate((inputs, inputs_flipped), 0), np.concatenate((labels, labels_flipped), 0)
 
+X = np.array(X)
+Y = np.array(Y)
 X, Y = augmentation(X, Y)
 
 print(X.shape)
