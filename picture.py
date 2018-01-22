@@ -27,9 +27,6 @@ X, Y = getDrivingData("race1516207298.txt")
 
 num_examples = X.shape[0]
 
-
-test = np.array([[1*1,2*1],[1*2,2*2],[1*3,2*3],[1*4,2*4]])
-
 def rgb2gray(rgb):
     """Convert RGB image to grayscale
 
@@ -41,6 +38,9 @@ def rgb2gray(rgb):
 
     """
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+
+for img in X:
+	print (img.shape)
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
