@@ -14,18 +14,13 @@ class DrivingNN(nn.Module):
 				param.requires_grad = False
 
 		self.classifier = nn.Sequential(
-			nn.Linear()
-			nn.Conv2d(3, 24, 5, stride=2),
+			nn.Linear(512*4*4, 1024),
 			nn.ReLU(),
-			nn.Conv2d(24, 36, 5, stride=2),
+			nn.Linear(1024, 512),
 			nn.ReLU(),
-			nn.Conv2d(36, 48, 5, stride=2),
+			nn.Linear(512, 128),
 			nn.ReLU(),
-			nn.Conv2d(48, 64, 3),
-			nn.ReLU(),
-			nn.Conv2d(64, 64, 3),
-			nn.ReLU(),
-			nn.Conv2d(64, num_classes, 1),
+			nn.Linear(128, num_classes),
 			# nn.Tanh()
 		)
 
