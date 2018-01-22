@@ -21,7 +21,7 @@ def getDrivingData(file_name, num_training_percentage=80, num_validation_percent
 
 	return X, Y
 
-X, Y = getDrivingData("racingdata/#track=1#speed=30.txt")
+X, Y = getDrivingData("race1516207298.txt")
 
 num_examples = X.shape[0]
 
