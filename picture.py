@@ -44,7 +44,6 @@ for img in X:
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
-	img = rgb2gray(img)
 	plt.imshow(img, origin='lower')
 	#plt.draw()
 	#plt.pause(1)
