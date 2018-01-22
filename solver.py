@@ -7,7 +7,7 @@ class Solver(object):
     
     def __init__(self, loss_func=torch.nn.MSELoss()):
         self.loss_func = loss_func
-        
+
     def train(self, model, train_data, learning_rate=1e-2, num_epochs=10, log_nth=0):
         """
         Train a given model with the provided data.
