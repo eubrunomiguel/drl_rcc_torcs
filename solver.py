@@ -45,13 +45,11 @@ class Solver(object):
 
                 optim.zero_grad()
                 outputs = model(inputs) 
-                outputs = outputs[:,0,0,0]
+                outputs = outputs[:,0,0,0] # simply transformation of [x, 1, 1, 1] to [x, 1]
                 loss = self.loss_func(outputs, targets)
-                
                 loss.backward()
                 optim.step()
 
-                loss_history.append(loss.data.cpu().numpy())
                 if log_nth and i % log_nth == 0:
                     last_log_nth_losses = loss_history[-log_nth:]
                     train_loss = np.mean(last_log_nth_losses)
@@ -59,17 +57,19 @@ class Solver(object):
                         (i + epoch * iter_per_epoch,
                          iter_per_epoch * num_epochs,
                          train_loss))
-                
+
+                loss_history.append(loss.data.cpu().numpy())
                 acc_history += getAccuracy(targets, outputs, 10)
                 
-            atrain_acc, atrain_loss = np.mean(acc_history), np.mean(loss_history)
-            self.train_loss_history.append(atrain_loss)
-            self.train_acc_history.append(atrain_acc)
+            train_acc, train_loss = np.mean(acc_history), np.mean(loss_history)
+            self.train_loss_history.append(train_loss)
+            self.train_acc_history.append(train_acc)
+
             if log_nth:
                 print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1,
                                                                    num_epochs,
-                                                                   atrain_acc,
-                                                                   atrain_loss))
+                                                                   train_acc,
+                                                                   train_loss))
                 
         print('FINISH.')
         
