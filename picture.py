@@ -27,23 +27,10 @@ X, Y = getDrivingData("race1516207298.txt")
 
 num_examples = X.shape[0]
 
-def rgb2gray(rgb):
-    """Convert RGB image to grayscale
-
-      Parameters:
-        rgb : RGB image
-
-      Returns:
-        gray : grayscale image
-
-    """
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+print(X.shape)
 
 for i in range(num_examples):
-	X[i, :, :, 0] = rgb2gray(X[i])
-
-for i in range(num_examples):
-	img = X[i,:,:,0]
+	img = X[i,:,:,:]
 	plt.imshow(img, origin='lower')
 	plt.draw()
 	plt.pause(1)

@@ -27,16 +27,19 @@ class DrivingData(Dataset):
 
 
 def rgb2gray(rgb):
-    """Convert RGB image to grayscale
+	"""Convert RGB image to grayscale
 
-      Parameters:
-        rgb : RGB image
+	  Parameters:
+		rgb : RGB image
 
-      Returns:
-        gray : grayscale image
+	  Returns:
+		gray : grayscale image
 
-    """
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+	"""
+	return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+
+def reduceDimRGBtoGray(arr):
+	return arr[:, :, :, :-2]
 
 
 def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, preprocess=True, greyscale=False, augmentation=False):
