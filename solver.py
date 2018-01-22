@@ -45,7 +45,8 @@ class Solver(object):
                     inputs, targets = inputs.cuda(), targets.cuda()
 
                 optim.zero_grad()
-                outputs = model(inputs) 
+                outputs = model(inputs)
+                print(outputs.shape, targets.shape)
                 outputs = outputs[:,0,0,0] # simply transformation of [x, 1, 1, 1] to [x, 1]
                 loss = self.loss_func(outputs, targets)
                 loss.backward()
