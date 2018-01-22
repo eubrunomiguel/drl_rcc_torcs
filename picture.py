@@ -46,9 +46,11 @@ Y = np.array(Y)
 for i in range(X.shape[0]):
 	X[i, :, :, 0] = rgb2gray(X[i])
 
+X = reduceDimRGBtoGray(X)
+
 print(X.shape)
 
-img = X[0,:,:,0]
+img = X[0,:,:,:]
 plt.imshow(img, origin='lower')
 plt.draw()
 plt.pause(1)
