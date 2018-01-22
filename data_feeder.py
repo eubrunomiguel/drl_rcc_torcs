@@ -108,9 +108,6 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	X = np.array(X)
 	Y = np.array(Y)
 
-	# move channel axis
-	X = X.transpose(0, 3, 1, 2)
-
 	# greyscale
 	if greyscale:
 		pass
@@ -124,6 +121,9 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	if preprocess:
 		X /= 255.0
 		X -= np.mean(X, axis=0)
+
+	# move channel axis
+	X = X.transpose(0, 3, 1, 2)
 
 	# subsample
 	totalSamples = X.shape[0]
