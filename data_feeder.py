@@ -38,7 +38,7 @@ def rgb2gray(rgb):
     """
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
 
-def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32, preprocess=True, greyscale=False, augmentation=False):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, preprocess=True, greyscale=False, augmentation=False):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
