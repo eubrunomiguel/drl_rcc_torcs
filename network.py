@@ -14,6 +14,7 @@ class DrivingNN(nn.Module):
 				param.requires_grad = False
 
 		self.classifier = nn.Sequential(
+			nn.Linear()
 			nn.Conv2d(3, 24, 5, stride=2),
 			nn.ReLU(),
 			nn.Conv2d(24, 36, 5, stride=2),
