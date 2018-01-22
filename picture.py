@@ -43,6 +43,9 @@ num_examples = X.shape[0]
 X = np.array(X)
 Y = np.array(Y)
 
+for i in range(X.shape[0]):
+	X[i] = rgb2gray(X[i])
+
 print(X.shape)
 
 img = X[0,:,:,:]
