@@ -4,6 +4,8 @@ import torch
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
 import pickle as plk
+import torch.nn.functional as F
+
 
 
 def getDrivingData(file_name, num_training_percentage=80, num_validation_percentage=20, dtype=np.float32):
@@ -28,6 +30,7 @@ num_examples = X.shape[0]
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
+	F.gr
 	# img = np.mean(img, -1)
 	plt.imshow(img, origin='lower')
 	plt.draw()
