@@ -34,6 +34,8 @@ def augmentation(inputs, labels):
 
 X, Y = augmentation(X, Y)
 
+print(X.shape)
+
 img = X[num_examples,:,:,:]
 print(Y[0], Y[num_examples])
 plt.imshow(img, origin='lower')
