@@ -62,8 +62,8 @@
       <file leaf-file-name="solver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/solver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="21" column="99" lean-forward="false" selection-start-line="21" selection-start-column="99" selection-end-line="21" selection-end-column="99" />
+            <state relative-caret-position="277">
+              <caret line="23" column="8" lean-forward="false" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -380,8 +380,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/solver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="21" column="99" lean-forward="false" selection-start-line="21" selection-start-column="99" selection-end-line="21" selection-end-column="99" />
+        <state relative-caret-position="277">
+          <caret line="23" column="8" lean-forward="false" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
