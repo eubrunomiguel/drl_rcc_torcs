@@ -30,12 +30,12 @@ class DrivingNN(nn.Module):
 				self._weight_init(self.classifier[i])
 
 	def forward(self, x):
-		print ("Before", x.shape)
+		# print ("Before", x.shape)
 		if self.pretrained_model is not None:
 			x = self.pretrained_model(x)
-		print ("After", x.shape)
+		# print ("After", x.shape)
 		x = x.view(-1, self.num_flat_features(x))
-		print ("After 2", x.shape)
+		# print ("After 2", x.shape)
 		x = self.classifier(x)
 
 		return x
