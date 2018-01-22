@@ -8,7 +8,7 @@ class Solver(object):
     def __init__(self, loss_func=torch.nn.MSELoss()):
         self.loss_func = loss_func
 
-    def train(self, model, train_data, learning_rate=1e-2, num_epochs=10, log_nth=0):
+    def train(self, model, train_data, learning_rate=1e-2, num_epochs=10, log_nth=100):
         """
         Train a given model with the provided data.
 
@@ -34,7 +34,6 @@ class Solver(object):
             
         print('START TRAIN.')
         for epoch in range(num_epochs):
-          
             acc_history = []
             loss_history = []
             # TRAINING
@@ -65,12 +64,8 @@ class Solver(object):
             self.train_loss_history.append(train_loss)
             self.train_acc_history.append(train_acc)
 
-            if log_nth:
-                print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1,
-                                                                   num_epochs,
-                                                                   train_acc,
-                                                                   train_loss))
-                
+            print('[Epoch %d/%d] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, train_acc, train_loss))
+
         print('FINISH.')
         
 def getAccuracy(label, output, range_percentage):
