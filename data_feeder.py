@@ -88,10 +88,18 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	Y = np.array(Y)
 	X = X.transpose(0, 3, 1, 2)
 
+	# greyscale
+	if greyscale:
+		pass
+
+	# augmentation
+	if augmentation:
+		pass
 
 	# preprocess
-	X /= 255.0
-	X -= np.mean(X, axis=0)
+	if preprocess:
+		X /= 255.0
+		X -= np.mean(X, axis=0)
 
 	# subsample
 	totalSamples = X.shape[0]
