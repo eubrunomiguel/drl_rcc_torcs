@@ -41,7 +41,7 @@ def rgb2gray(rgb):
 def reduceDimRGBtoGray(arr):
 	return arr[:, :, :, :-2]
 
-def augmentation(inputs, labels):
+def augmentation_flip(inputs, labels):
 	inputs_flipped = np.flip(inputs, 2)
 	labels_flipped = labels * -1
 	return np.concatenate((inputs, inputs_flipped), 0), np.concatenate((labels, labels_flipped), 0)
@@ -117,7 +117,7 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 
 	# augmentation
 	if augmentation:
-		pass
+		X, Y = augmentation_flip(X, Y)
 
 	# preprocess
 	# am I messing up with the first dim here?
