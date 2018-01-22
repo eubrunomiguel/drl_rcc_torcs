@@ -40,7 +40,7 @@ def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
 
 for img in X:
-	print (img.shape)
+	img = rgb2gray(img)
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
