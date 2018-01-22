@@ -8,6 +8,8 @@ class DrivingNN(nn.Module):
 	def __init__(self, num_classes=1, pretrained_model=None):
 		super(DrivingNN, self).__init__()
 
+		print("ok")
+
 		if pretrained_model is not None:
 			self.pretrained_model = pretrained_model
 			for param in self.pretrained_model.parameters():
