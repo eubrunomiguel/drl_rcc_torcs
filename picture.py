@@ -25,7 +25,6 @@ X, Y = getDrivingData("race1516207298.txt")
 
 num_examples = X.shape[0]
 
-X = np.mean()
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
