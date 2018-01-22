@@ -21,10 +21,12 @@ class Solver(object):
         """
 
         # freezes pre-trained network's gradient
-        
+
         optim = torch.optim.Adam(filter(lambda x: x.requires_grad,model.parameters()), lr = learning_rate)
+
         self.train_loss_history = []
         self.train_acc_history = []
+
         iter_per_epoch = len(train_data)
 
         if torch.cuda.is_available():
