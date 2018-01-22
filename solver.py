@@ -29,6 +29,7 @@ class Solver(object):
         iter_per_epoch = len(train_data)
 
         if torch.cuda.is_available():
+            print("Cuda available")
             model.cuda()
             
         print('START TRAIN.')
