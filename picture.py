@@ -40,10 +40,10 @@ def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
 
 for i in range(num_examples):
-	X[i, :, :, :] = rgb2gray(X[i])
+	X[i, :, :, 0] = rgb2gray(X[i])
 
 for i in range(num_examples):
-	img = X[i,:,:,:]
+	img = X[i,:,:,0]
 	plt.imshow(img, origin='lower')
 	plt.draw()
 	plt.pause(1)
