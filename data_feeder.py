@@ -105,8 +105,8 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 			X += x
 			Y += y
 
-	X = np.array(X)
-	Y = np.array(Y)
+	X = np.array(X).astype(np.float16)
+	Y = np.array(Y).astype(np.float16)
 
 	# greyscale
 	if greyscale:
