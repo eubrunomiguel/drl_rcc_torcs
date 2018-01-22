@@ -29,7 +29,7 @@ X = np.mean()
 
 for i in range(num_examples):
 	img = X[i,:,:,:]
-	img = np.mean(img, -1)
+	# img = np.mean(img, -1)
 	plt.imshow(img, origin='lower')
 	plt.draw()
 	plt.pause(1)
