@@ -2,11 +2,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+import time
 
 class DrivingNN(nn.Module):
 
-	def __init__(self, num_classes=1, pretrained_model=None):
+	def __init__(self, num_classes=1, pretrained_model=None, grayscale=False, weight_init=True):
 		super(DrivingNN, self).__init__()
+
+		self.grayscale = grayscale
+
+		self.expander = nn.Conv2d(1,3,3, padding=1);
 
 		if pretrained_model is not None:
 			self.pretrained_model = pretrained_model
@@ -15,29 +20,33 @@ class DrivingNN(nn.Module):
 
 		self.classifier = nn.Sequential(
 			nn.Linear(512*2*2, 1024),
+			# nn.BatchNorm1d(1024),
 			nn.ReLU(),
 			nn.Linear(1024, 512),
+			# nn.BatchNorm1d(512),
 			nn.ReLU(),
 			nn.Linear(512, 128),
+			# nn.BatchNorm1d(128),
 			nn.ReLU(),
 			nn.Linear(128, num_classes),
 			# nn.Tanh()
 		)
 
-		for i in range(len(self.classifier)):
-			if not str(self.classifier[i]) == "ReLU()" and not str(self.classifier[i]) == "Tanh()":
-				self._bias_init(self.classifier[i])
-				self._weight_init(self.classifier[i])
+		if weight_init:
+			print("Initializing weights")
+			for i in range(len(self.classifier)):
+				if not str(self.classifier[i]) == "ReLU()" and not str(self.classifier[i]) == "Tanh()" and "BatchNorm1d" not in str(self.classifier[i]):
+					self._bias_init(self.classifier[i])
+					self._weight_init(self.classifier[i])
 
 	def forward(self, x):
-		# print ("Before", x.shape)
+		if self.grayscale:
+			x = self.expander(x)
+
 		if self.pretrained_model is not None:
 			x = self.pretrained_model(x)
-		# print ("After", x.shape)
 		x = x.view(-1, self.num_flat_features(x))
-		# print ("After 2", x.shape)
 		x = self.classifier(x)
-
 		return x
 
 	@property

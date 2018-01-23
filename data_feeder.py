@@ -102,25 +102,29 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 		with open(filename, 'rb') as file:
 			racedata = plk.load(file)
 			x, y = zip(*racedata)
-			X += x
-			Y += y
-
-	X = np.array(X).astype(np.float16)
-	Y = np.array(Y).astype(np.float16)
+			if len(X) == 0:
+				X = np.array(x, dtype='float32')
+				Y = np.array(y, dtype='float32')
+			else:
+				X = np.concatenate((X,np.array(x, dtype='float32')))
+				Y = np.concatenate((Y,np.array(y, dtype='float32')))
 
 	# greyscale
 	if greyscale:
+		print("Converting to grey scale")
 		for i in range(X.shape[0]):
 			X[i, :, :, 0] = rgb2gray(X[i])
 		X = reduceDimRGBtoGray(X)
 
 	# augmentation
 	if augmentation:
+		print("Augmentation flipping")
 		X, Y = augmentation_flip(X, Y)
 
 	# preprocess
 	# am I messing up with the first dim here?
 	if preprocess:
+		print("Preprocessing: feature normalization")
 		X /= 255.0
 		X -= np.mean(X, axis=0)
 
@@ -140,7 +144,8 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 	X_val = X[mask]
 	y_val = Y[mask]
 
-	print("Number of examples %d" % (X.shape[0]))
+	# all data: (34.5k images) 1697464320 bytes
+	print("Number of examples %d/%d/%d/%d. Size in bytes %d" % (X.shape[0],X.shape[1],X.shape[2],X.shape[3], (X.size * X.itemsize)))
 
 	return DrivingData(X_train, y_train), DrivingData(X_val, y_val)
 
