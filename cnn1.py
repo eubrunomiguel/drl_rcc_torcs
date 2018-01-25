@@ -26,7 +26,7 @@ train_loader = torch.utils.data.DataLoader(train_data, batch_size=50, shuffle=Tr
 from solver import *
 
 
-    solver = Solver(loss_func = lossfunc)
-    accuracy_history, loss_history = solver.train(network, train_loader, num_epochs=100, learning_rate=1e-3)
+solver = Solver(loss_func = lossfunc)
+accuracy_history, loss_history = solver.train(network, train_loader, num_epochs=100, learning_rate=1e-3)
 
 
