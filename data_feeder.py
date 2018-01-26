@@ -47,7 +47,7 @@ def augmentation_flip(inputs, labels):
 	return np.concatenate((inputs, inputs_flipped), 0), np.concatenate((labels, labels_flipped), 0)
 
 
-def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, preprocess=True, greyscale=False, augmentation=False):
+def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_percentage=20, preprocess=True, greyscale=False, augmentation=False, remove = false, limit = 3):
 	"""
 	Load and preprocess the training dataset.
 	Transpose image data from H, W, C to C, H, W and group as N, H, W, C.
@@ -127,6 +127,14 @@ def getDrivingData(speed=0, track=0, num_training_percentage=80, num_validation_
 		print("Preprocessing: feature normalization")
 		X /= 255.0
 		X -= np.mean(X, axis=0)
+        
+    if remove:
+        while i < X.shape[0]:
+            if Y[i] > limit or Y[i] < -limit:
+                Y = np.remove(Y, i)
+                X = np.remove(X, i)
+            else:
+                i+=1
 
 	# move channel axis
 	X = X.transpose(0, 3, 1, 2)
