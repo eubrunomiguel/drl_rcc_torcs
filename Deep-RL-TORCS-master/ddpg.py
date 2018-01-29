@@ -29,11 +29,12 @@ def playGame(train_indicator=0):    #1 means Train, 0 means simply Run
     LRC = 0.001     #Lerning rate for Critic
 
     action_dim = 3  #Steering/Acceleration/Brake
-    state_dim = 29  #of sensors input
+    #state_dim = 29  #of sensors input
+    state_dim = 64*64*3 #image
 
     np.random.seed(1337)
 
-    vision = False
+    vision = True
 
     EXPLORE = 100000.
     episode_count = 20000
@@ -91,7 +92,7 @@ def playGame(train_indicator=0):    #1 means Train, 0 means simply Run
         # print "########################################Did it make fast"
         # time.sleep(0.5)
 
-        s_t = np.hstack((ob.angle, ob.track, ob.trackPos, ob.speedX, ob.speedY,  ob.speedZ, ob.wheelSpinVel/100.0, ob.rpm))
+        s_t = np.hstack((ob.img))
         total_reward = 0.
         for j in range(max_steps):
             loss = 0 
@@ -115,7 +116,7 @@ def playGame(train_indicator=0):    #1 means Train, 0 means simply Run
 
             ob, r_t, done, info = env.step(a_t[0])
 
-            s_t1 = np.hstack((ob.angle, ob.track, ob.trackPos, ob.speedX, ob.speedY, ob.speedZ, ob.wheelSpinVel/100.0, ob.rpm))
+            s_t1 = np.hstack((ob.img))
         
             buff.add(s_t, a_t[0], r_t, s_t1, done)      #Add replay buffer
             
