@@ -74,3 +74,8 @@ def getAccuracy(label, output, range_percentage):
         if label[i].data[0] < 0 and end[i].data[0] <= output[i].data[0] <= begin[i].data[0]:
             accuracy[i] = 1
     return accuracy
+
+def copyWeights(DrivingNN model):
+    model2 = DrivingNN()
+    model2.load_state_dict(model.state_dict())
+    return model2
