@@ -8,7 +8,7 @@ class Solver(object):
     def __init__(self, loss_func=torch.nn.MSELoss()):
         self.loss_func = loss_func
 
-    def train(self, model, train_data, learning_rate=1e-2, num_epochs=10):
+    def train(self, model, train_data, val_data, learning_rate=1e-3, num_epochs=10):
         """
         Train a given model with the provided data.
 
@@ -25,6 +25,8 @@ class Solver(object):
 
         self.train_loss_history = []
         self.train_acc_history = []
+        self.val_loss_history = []
+        self.val_acc_history = []
 
         if torch.cuda.is_available():
             print("Cuda available")
@@ -35,6 +37,8 @@ class Solver(object):
             start = time.time()
             acc_history = []
             loss_history = []
+            
+            
             # TRAINING
             for i, (inputs, targets) in enumerate(train_data):
                 inputs, targets = Variable(inputs.float()), Variable(targets.float())
@@ -53,15 +57,41 @@ class Solver(object):
                 acc_history += getAccuracy(targets, outputs, 10)
                 
             train_acc, train_loss = np.mean(acc_history), np.mean(loss_history)
+            
             self.train_loss_history.append(train_loss)
             self.train_acc_history.append(train_acc)
 
             total_time = time.time() - start
-
+            
             print('[Epoch %d/%d/%.3fs] TRAIN acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, total_time, train_acc, train_loss))
+            
+            # VALIDATION
+            val_losses = []
+            val_accuracy = []
+            model.eval()
+            #gts, preds = [], []
+            for inputs, targets in val_data:
+                inputs, targets = Variable(inputs.float()), Variable(targets.float())
+                if model.is_cuda:
+                    inputs, targets = inputs.cuda(), targets.cuda()
+
+                outputs = model.forward(inputs)
+                
+                loss = self.loss_func(outputs, targets)
+                val_losses.append(loss.data.cpu().numpy())
+
+                val_accuracy += getAccuracy(targets, outputs, 10)
+
+            model.train()
+            val_acc, val_loss = np.mean(val_accuracy), np.mean(val_losses)
+            
+            self.val_acc_history.append(val_acc)
+            self.val_loss_history.append(val_loss)
+
+            print('[Epoch %d/%d] VAL acc/loss: %.3f/%.3f' % (epoch + 1, num_epochs, val_acc, val_loss))
 
         print('FINISH.')
-        return self.train_acc_history, self.train_loss_history
+        return self.train_acc_history, self.train_loss_history, self.val_acc_history, self.val_loss_history
         
 def getAccuracy(label, output, range_percentage):
     num_examples = label.data.shape[0]
