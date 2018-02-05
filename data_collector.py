@@ -58,18 +58,17 @@ import socket
 import sys
 import getopt
 import os
+import os.path
 import time
 import collections as col
-import matplotlib.pyplot as plt
 import pickle as plk
 from scripts.autostart import TorcsInstance
+from network import *
+from torch.autograd import Variable
+from data_feeder import *
+from sync import *
 
 PI= 3.14159265359
-
-initial_speed = 30
-target_speed = initial_speed
-max_speed_test = 100
-speed_increase_rate = 10
 
 data_size = 2**17
 
@@ -85,7 +84,8 @@ ophelp+= ' --stage, -s <#>      0=warm up, 1=qualifying, 2=race, 3=unknown. [3]\
 ophelp+= ' --debug, -d          Output full telemetry.\n'
 ophelp+= ' --help, -h           Show this help.\n'
 ophelp+= ' --version, -v        Show current version.\n'
-ophelp+= ' --random, -r         Random choose track.'
+ophelp+= ' --random, -r         Random choose track and speed.'
+ophelp+= ' --training, -x       Choose steering according to vision and traing in respect to the real value.'
 usage= 'Usage: %s [ophelp [optargs]] \n' % sys.argv[0]
 usage= usage + ophelp
 version= "20130505-2"
@@ -128,7 +128,7 @@ def bargraph(x,mn,mx,w,c='X'):
 	return '[%s]' % (nnc+npc+ppc+pnc)
 
 class Client():
-	def __init__(self,H=None,p=None,i=None,e=None,t=None,s=None,d=None, vision=True):
+	def __init__(self,H=None,p=None,i=None,e=None,t=None,s=None,d=None,r=None,x=None, maxspeed=30,track=1,vision=True, model=""):
 		# If you don't like the option defaults,  change them here.
 		self.vision = vision
 
@@ -140,7 +140,9 @@ class Client():
 		self.stage= 3 # 0=Warm-up, 1=Qualifying 2=Race, 3=unknown <Default=3>
 		self.debug= False
 		self.maxSteps= 7000  # 50steps/second
-		self.randomTrack = False
+		self.randomTrackSpeed = False
+		self.maxSpeed = maxspeed
+		self.training = False
 		self.parse_the_command_line()
 		if H: self.host= H
 		if p: self.port= p
@@ -149,6 +151,13 @@ class Client():
 		if t: self.trackname= t
 		if s: self.stage= s
 		if d: self.debug= d
+		if x: self.training= x
+		if self.training:
+			model_name = "models/#track=%d#speed=%d.model" % (track, maxspeed)
+			if model:
+				model_name = model
+			print("Loading %s " % model_name)
+			self.network = getNetwork(model_file=model_name)
 		self.S= ServerState()
 		self.R= DriverAction()
 		self.setup_connection()
@@ -198,10 +207,10 @@ class Client():
 
 	def parse_the_command_line(self):
 		try:
-			(opts, args) = getopt.getopt(sys.argv[1:], 'H:p:i:m:e:t:r:s:dhv',
+			(opts, args) = getopt.getopt(sys.argv[1:], 'H:p:i:m:e:t:r:s:x:dhv',
 					   ['host=','port=','id=','steps=',
 						'episodes=','track=','stage=',
-						'debug','help','version', 'random'])
+						'debug','help','version', 'random', 'training'])
 		except getopt.error as why:
 			print('getopt error: %s\n%s' % (why, usage))
 			sys.exit(-1)
@@ -227,7 +236,9 @@ class Client():
 				if opt[0] == '-m' or opt[0] == '--steps':
 					self.maxSteps= int(opt[1])
 				if opt[0] == '-r' or opt[0] == '--random':
-					self.randomTrack = True
+					self.randomTrackSpeed = True
+				if opt[0] == '-x' or opt[0] == '--training':
+					self.training = True
 				if opt[0] == '-v' or opt[0] == '--version':
 					print('%s %s' % (sys.argv[0], version))
 					sys.exit(0)
@@ -290,8 +301,8 @@ class Client():
 
 	def shutdown(self):
 		if not self.so: return
-		print(("Race terminated or %d steps elapsed. Shutting down %d."
-			   % (self.maxSteps,self.port)))
+		print(("Race terminated. Shutting down %d."
+			   % (self.port)))
 		self.so.close()
 		self.so = None
 		#sys.exit() # No need for this really.
@@ -536,7 +547,7 @@ def destringify(s):
 			return [destringify(i) for i in s]
 
 
-def make_observaton(raw_obs):
+def make_observaton(raw_obs, maxspeed):
 
 	names = ['focus',
 			 'speedX', 'speedY', 'speedZ',
@@ -552,9 +563,9 @@ def make_observaton(raw_obs):
 	image_rgb = obs_vision_to_image_rgb(raw_obs[names[8]])
 
 	return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
-					   speedX=np.array(raw_obs['speedX'], dtype=np.float32)/target_speed,
-					   speedY=np.array(raw_obs['speedY'], dtype=np.float32)/target_speed,
-					   speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/target_speed,
+					   speedX=np.array(raw_obs['speedX'], dtype=np.float32)/maxspeed,
+					   speedY=np.array(raw_obs['speedY'], dtype=np.float32)/maxspeed,
+					   speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/maxspeed,
 					   opponents=np.array(raw_obs['opponents'], dtype=np.float32)/200.,
 					   rpm=np.array(raw_obs['rpm'], dtype=np.float32),
 					   track=np.array(raw_obs['track'], dtype=np.float32)/200.,
@@ -595,7 +606,7 @@ def drive(c, observate):
 	correct thing to do is write your own `drive()` function.'''
 	S,R= c.S.d,c.R.d
 
-	observation = make_observaton(S)
+	observation = make_observaton(S, c.maxSpeed)
 	_, _, _, _, _, _, track, _, vision, trackPos = observation
 	img = processImage(vision)
 
@@ -604,16 +615,43 @@ def drive(c, observate):
 	# Steer To Center
 	R['steer'] -= S['trackPos']*.10
 
+	# Append observation for later training
 	if observate:
 		buffer.append((img, R['steer']))
 
+	# do a forward pass to predict value, worry later about fixing this value
+	if observate and c.training:
+		real_value = R['steer']
+
+		# prepare image
+		temp_buff = []
+		temp_buff.append(img)
+		temp_buff = np.array(temp_buff, dtype='float32')
+		if c.network.grayscale:
+			temp_buff[0, :, :, 0] = rgb2gray(temp_buff[0])
+			temp_buff = reduceDimRGBtoGray(temp_buff)
+		temp_buff /= 255.0
+		temp_buff -= c.network.meanTrainingInput
+		temp_buff = temp_buff.transpose(0, 3, 1, 2)
+		img = torch.from_numpy(temp_buff)
+
+		formatted_img = Variable(img.float())
+		expectation = c.network.forward(formatted_img).data[0][0]
+		R['steer'] = expectation
+		#print("Steering, predicated value %f, real value %f" % (R['steer'], real_value))
+
+	# stop the race if lap finished or out of the track
+	if track.min() < 0 or S['lastLapTime'] > 0.0:
+		return True
+
 	# Throttle Control
-	if S['speedX'] < target_speed - (R['steer']*50):
+	if S['speedX'] < c.maxSpeed - (R['steer']*50):
 		R['accel']+= .01
 	else:
 		R['accel']-= .01
-	if S['speedX']<10:
-		R['accel']+= 1/(S['speedX']+.1)
+
+	if S['speedX']< c.maxSpeed / 5.0:
+		R['accel'] += .01
 
 	# Traction Control System
 	if ((S['wheelSpinVel'][2]+S['wheelSpinVel'][3]) - (S['wheelSpinVel'][0]+S['wheelSpinVel'][1]) > 5):
@@ -632,51 +670,138 @@ def drive(c, observate):
 	if S['speedX']>170:
 		R['gear']=6
 
-	return (S['lastLapTime'] > 0.0)
-
+	return False
 
 def save_state(filename):
+	return
 	print("Saving race data %s ..." % (filename))
-	with open(filename, 'wb') as file:
+	with open(filename, 'ab') as file:
 		plk.dump(buffer, file)
 
+def syncronizeWithServer(filename):
+	return
+	sync_instance = Synchronization()
+
+	# send new data
+	while True:
+		if not sync_instance.fileExistPhysical(filename + ".txt"):
+			break
+
+		if sync_instance.upload(filename + ".txt", from_file_path=filename + ".txt", delete_after_upload=True):
+			break
+		else:
+			time.sleep(5)
+
+	# receive new model
+	while True:
+		if not sync_instance.fileExistBucket(filename + 'model'):
+			continue
+
+		if sync_instance.download(filename + 'model', filename + 'model'):
+			break
+		else:
+			print("There is no new network available")
+			time.sleep(5)
 
 buffer = []
 
 # ================ MAIN ================
 if __name__ == "__main__":
 
-	ignore_steps = 10  # camera is rotating at the beginning
-	track = 1
-	next_track = False
+	ignore_steps = 12  # camera is rotating at the beginning
+	boolean = [True, False]
+	tracks = [1]
+	speeds = [30]
+	randomTrackSpeed = False
+	isTraining = True
+
+	torcs_instance = TorcsInstance()
+	sync_instance = Synchronization()
+
+	stop_training_list = []  # tracks that have achieve best results, so we test then manually later
 
 	while True:
-		while target_speed < max_speed_test:
-			try:
-				C = Client(p=3101)
-				buffer = []
-				filename = "racingdata/" + "race" + str(time.time()) + "#track=" + str(track) + "#speed=" + str(target_speed) + ".txt"
-				start = time.time()
-				for step in range(C.maxSteps):
-					C.get_servers_input()
-					endrace = drive(C, (step > ignore_steps))
-					C.respond_to_server()
-					if endrace:
-						end = time.time()
-						print("Runned race in %fs, steps %d/%d, data count %d" % (end - start, step, C.maxSteps, len(buffer)))
-						save_state(filename)
-						buffer = []
-						break
-				target_speed += speed_increase_rate
-				C.shutdown()
-			except KeyboardInterrupt:
-				pass
-		track += 1
-		target_speed = initial_speed
-		torcs_instance = TorcsInstance()
-		torcs_instance.changeTrack()
+		for track in tracks:
+			for speed in speeds:
+				for wi in boolean:
+					for sa in boolean:
+						for au in boolean:
+							for gs in boolean:
+								for wd in [0, 0.2]:
+									weight_decay = wd
+									batchsize = 128
+									numepochs = 100
+									learningrate = 2e-4
+									weightinit = wi  # false has proved to be the best
+									sizeaverage = sa  # false has proved to be the best
+									grayscale = gs
+									augmentation = au
+									preprocess = True
+									filename = "/home/drl_rcc_torcs/models/tr%d/#track=%d#speed=%d#wd=%f#bs=%d#ne=%e#wi=%s#sa=%s#au=%s#gs=%s" % \
+														   (track, track, speed, weight_decay, batchsize, numepochs,
+															weightinit, sizeaverage, augmentation, grayscale)
+									if filename in stop_training_list:
+										print("best performance already achieve, skipping")
+										continue
+									modelfile = filename + ".model"
+									datafile = filename + ".txt"
 
-# later flip
-# later shuffle to lose correlation
-# drive mode change to see different angles
-# image augumentation
+									# if sync_instance.fileExistBucket(filename + ".txt") and not sync_instance.fileExistBucket(filename + ".model"):
+									# 	# we have uploaded data, then we are waiting for the model
+									# 	print ("we have uploaded data, then we are waiting for the model")
+									# 	continue
+									#
+									# if sync_instance.fileExistBucket(modelfile):
+									# 	# we have new model, download
+									# 	print("downloading new model")
+									# 	sync_instance.download(modelfile, modelfile)
+									#
+									# if sync_instance.fileExistPhysical(filename + ".txt"):
+									# 	print("removing old file")
+									# 	sync_instance.removeFilePhysical(filename + ".txt")
+									#
+									# if not os.path.isfile(modelfile):
+									# 	# we do not have a model for this setting
+									# 	print("model %s does not exist" % modelfile)
+									# 	continue
+
+									try:
+										C = Client(p=3101, maxspeed=speed, track=track, model="/home/drl_rcc_torcs/models/tr1/#track=1#speed=30#wd=0.000000#bs=128#ne=1.000000e+02#wi=True#sa=True#au=True#gs=True.model")
+										isTraining = C.training
+										randomTrackSpeed = C.randomTrackSpeed
+										buffer = []
+										start = time.time()
+										steps = 0
+										while True:
+											C.get_servers_input()
+											endrace = drive(C, (steps > ignore_steps))
+											C.respond_to_server()
+											steps += 1
+											if steps == 5000:
+												print("Flushing buffer, data count %d" % (len(buffer)))
+												save_state(datafile)
+												buffer = []
+											if endrace:
+												end = time.time()
+												print("Runned race in %fs, steps %d, data count %d" % (end - start, steps, len(buffer)))
+												save_state(datafile)
+												buffer = []
+												torcs_instance.close()
+												if steps > 1400:
+													stop_training_list.append(filename)
+												if C.training:
+													with open("training_log.txt", 'a') as file:
+														text = "\nfile = %s, steps = %d " % (modelfile, steps)
+														file.write(text)
+													sync_instance.upload(filename + '.txt', filename + '.txt')
+												break
+										C.shutdown()
+										torcs_instance.sleep()
+									except KeyboardInterrupt:
+										pass
+			if randomTrackSpeed:
+				torcs_instance.changeTrack()
+		if not isTraining:
+			break
+
+# steering distribution. going much straight?
